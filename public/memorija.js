@@ -70,7 +70,7 @@ let isDragging = false;
         modal.style.display = 'none';
     });
 
-document.getElementById('saveNewPageButton').addEventListener('click', function () {
+ document.getElementById('saveNewPageButton').addEventListener('click', function () {
     const pageName = document.getElementById('newPageNameInput').value;
     if (!pageName) {
         alert('Morate uneti naziv verzije.');
@@ -79,24 +79,22 @@ document.getElementById('saveNewPageButton').addEventListener('click', function 
 
     const images = [];
     const imgElements = document.querySelectorAll('img');
+    const backgroundImage = document.body.style.backgroundImage; // Provera pozadinske slike
 
-    // Filtriraj slike, isključi #playerCover
+    // Prolazimo kroz sve slike na stranici i spremamo njihove pozicije i dimenzije
     imgElements.forEach(img => {
-        if (img.id !== 'playerCover') {  // Ignoriši playerCover sliku
-            const rect = img.getBoundingClientRect();
-            images.push({
-                type: 'img',
-                src: img.src,
-                top: rect.top,
-                left: rect.left,
-                width: rect.width,
-                height: rect.height
-            });
-        }
+        const rect = img.getBoundingClientRect(); // Uzmi poziciju slike
+        images.push({
+            type: 'img',
+            src: img.src,
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height
+        });
     });
 
     // Provera i čuvanje pozadinske slike ako postoji
-    const backgroundImage = document.body.style.backgroundImage;
     if (backgroundImage && backgroundImage !== 'none') {
         images.push({
             type: 'background',
@@ -106,7 +104,7 @@ document.getElementById('saveNewPageButton').addEventListener('click', function 
 
     const pageData = {
         name: pageName,
-        images: images
+        images: images // Čuva slike sa njihovim pozicijama i dimenzijama
     };
 
     savedPages.push(pageData);
@@ -116,7 +114,8 @@ document.getElementById('saveNewPageButton').addEventListener('click', function 
     document.getElementById('newPageNameInput').value = '';
 });
 
-function renderPageList() {
+
+ function renderPageList() {
     pageList.innerHTML = '';
     savedPages.forEach((page, index) => {
         const li = document.createElement('li');
@@ -151,16 +150,14 @@ function deleteVersion(index) {
     renderPageList(); // Ponovo renderuj listu verzija
 }
 
-function restoreImages(images) {
-    // Prvo ukloni sve postojeće slike sa stranice, osim #playerCover
+  function restoreImages(images) {
+    // Prvo ukloni sve postojeće slike sa stranice
     const existingImages = document.querySelectorAll('img');
     existingImages.forEach(function (img) {
-        if (img.id !== "playerCover") {  // Ignoriši playerCover sliku
-            img.remove();
-        }
+        img.remove();
     });
 
-    // Ukloni pozadinsku sliku sa body ili drugih elemenata
+    // Ukloni pozadinsku sliku sa body ili drugih elemenata koji imaju pozadinu
     const elementsWithBackground = document.querySelectorAll('*');
     elementsWithBackground.forEach(function (element) {
         const backgroundImage = window.getComputedStyle(element).backgroundImage;
@@ -187,15 +184,23 @@ function restoreImages(images) {
             document.body.appendChild(img);
         }
     });
-}
-// Obavesti sve povezane korisnike da je verzija učitana
-socket.emit('versionLoaded', { images });
 
-// Osluškuj za obaveštenja o učitanoj verziji, ali bez alert-a
+    // Emitovanje događaja samo ako korisnik inicira učitavanje
+    if (!window.isVersionSyncing) {
+        socket.emit('versionLoaded', images);
+    }
+}
+
+// Osluškivanje događaja za učitavanje verzije
 socket.on('versionLoaded', (data) => {
-    // Ažuriraj slike na stranici
-    restoreImages(data.images);
+    if (data) {
+        window.isVersionSyncing = true;
+        restoreImages(data);
+        window.isVersionSyncing = false;
+    }
 });
+
+ 
 
     document.getElementById('downloadPagesButton').addEventListener('click', function () {
         if (savedPages.length === 0) {
