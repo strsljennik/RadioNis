@@ -150,13 +150,14 @@ function deleteVersion(index) {
     renderPageList(); // Ponovo renderuj listu verzija
 }
 
-  function restoreImages(images) {
-    // Prvo ukloni sve postojeće slike sa stranice
+function restoreImages(images) {
+    // Prvo ukloni sve postojeće slike sa stranice, osim one sa id="playerCover"
     const existingImages = document.querySelectorAll('img');
     existingImages.forEach(function (img) {
-        img.remove();
+        if (img.id !== "playerCover") {
+            img.remove();
+        }
     });
-
     // Ukloni pozadinsku sliku sa body ili drugih elemenata koji imaju pozadinu
     const elementsWithBackground = document.querySelectorAll('*');
     elementsWithBackground.forEach(function (element) {
