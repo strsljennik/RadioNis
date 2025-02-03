@@ -59,3 +59,38 @@ document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
+//MODALI  DRAG FUNKCIJA
+let isDraggingGostimodal = false;
+let isDraggingFunctionModal = false;
+let offsetXGostimodal, offsetYGostimodal;
+let offsetXFunctionModal, offsetYFunctionModal;
+
+const gostimodal = document.getElementById('gostimodal');
+const functionModal = document.getElementById('functionModal');
+
+// Funkcija za pomeranje bilo kog modala
+function setupDrag(modal, isDragging, offsetX, offsetY) {
+    modal.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        offsetX = e.clientX - modal.offsetLeft;
+        offsetY = e.clientY - modal.offsetTop;
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+            modal.style.left = e.clientX - offsetX + 'px';
+            modal.style.top = e.clientY - offsetY + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', function () {
+        isDragging = false;
+    });
+}
+
+// Pomeranje za gostimodal
+setupDrag(gostimodal, isDraggingGostimodal, offsetXGostimodal, offsetYGostimodal);
+
+// Pomeranje za functionModal
+setupDrag(functionModal, isDraggingFunctionModal, offsetXFunctionModal, offsetYFunctionModal);
+
