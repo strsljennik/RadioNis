@@ -186,12 +186,11 @@ function restoreImages(images) {
         }
     });
 
-    // Emitovanje događaja samo ako korisnik inicira učitavanje
-    if (!window.isVersionSyncing) {
+    // Emituj verziju SVIM korisnicima, ali izbegni loop kada stiže sa servera
+    if (!window.isVersionSyncingFromServer) {
         socket.emit('versionLoaded', images);
     }
 }
-
 // Osluškivanje događaja za učitavanje verzije
 socket.on('versionLoaded', (data) => {
     if (data) {
