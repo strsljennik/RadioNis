@@ -1,6 +1,7 @@
 module.exports = (io) => {
    let chatContainerState = { x: 0, y: 0, width: 900, height: 600 };
-
+   let currentVersion = null;
+   
     io.on('connection', (socket) => {
         console.log('A user connected: ' + socket.id);
 
