@@ -1,19 +1,13 @@
 module.exports = (io) => {
     let chatContainerState = { x: 300, y: 100, width: 900, height: 600 };
-  let restoreImages ;
+  
   
        io.on('connection', (socket) => {
         console.log('A user connected: ' + socket.id);
 
     socket.emit('updateChatContainer', { ...chatContainerState });
 
-// Kada klijent pošalje 'restoreImages', server emituje podatke svim povezanim korisnicima
-    socket.on('restoreImages', (images) => {
-     socket.broadcast.emit('restoreImages', images);  // Emituj svim drugim korisnicima
-    });
-
-
-    // Osluškuje novog gosta i šalje mu poruku dobrodošlice
+   // Osluškuje novog gosta i šalje mu poruku dobrodošlice
         socket.on('new_guest', () => {
            const greetingMessage = `Dobro nam došli, osećajte se kao kod kuće, i budite nam raspoloženi! Sada će vam vaša Konobarica posluziti kaficu ☕, 
                                     a naši DJ-evi će se pobrinuti da vam ispune muzičke želje. Registrovanje , Logovanje , Biranje boje , Muzika i sve ostalo 
