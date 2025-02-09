@@ -18,9 +18,11 @@ module.exports = (io) => {
 
  socket.on('new_guest', () => {
             const greetingMessage = `Dobro nam došli, osećajte se kao kod kuće, i budite nam raspoloženi! Sada će vam vaša Konobarica posluziti kaficu ☕, 
-                                    a naši DJ-evi će se pobrinuti da vam ispune muzičke želje.`;
+                                    a naši DJ-evi će se pobrinuti da vam ispune muzičke želje. Registrovanje , Logovanje , Biranje boje , Muzika i sve ostalo 
+    sto vam je potrebno mozete naci na tabli koja se otvara klikom na dugme  G `;
             io.emit('message', { 
                 username: '<span class="konabarica">Konobarica</span>', 
+                color: 'orange',
                 message: greetingMessage,
                 isSystemMessage: true 
             });
