@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Postojeći kod za kreiranje i stilizaciju modala
     const modal = document.createElement('div');
     modal.id = 'memoryModal';
     modal.style.display = 'none';
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.style.padding = '20px';
     modal.style.overflow = 'auto';
 
-let isDragging = false;
+   let isDragging = false;
     let offsetX, offsetY;
 
     modal.addEventListener('mousedown', function (e) {
@@ -127,7 +128,13 @@ let isDragging = false;
         li.addEventListener('click', function () {
             alert(`Učitana verzija: ${page.name}`);
             restoreImages(page.images); // Učitavanje slika sa pozicijama
-        });
+socket.emit('restoreImages', page.images);
+  });
+
+socket.on('restoreImages', function (images) {
+    restoreImages(images);
+});
+
 
         // Dodaj desni klik za brisanje
         li.addEventListener('contextmenu', function(event) {
@@ -150,14 +157,13 @@ function deleteVersion(index) {
     renderPageList(); // Ponovo renderuj listu verzija
 }
 
-function restoreImages(images) {
-    // Prvo ukloni sve postojeće slike sa stranice, osim one sa id="playerCover"
+    function restoreImages(images) {
+    // Prvo ukloni sve postojeće slike sa stranice
     const existingImages = document.querySelectorAll('img');
     existingImages.forEach(function (img) {
-        if (img.id !== "playerCover") {
-            img.remove();
-        }
+        img.remove();
     });
+
     // Ukloni pozadinsku sliku sa body ili drugih elemenata koji imaju pozadinu
     const elementsWithBackground = document.querySelectorAll('*');
     elementsWithBackground.forEach(function (element) {
@@ -185,24 +191,17 @@ function restoreImages(images) {
             document.body.appendChild(img);
         }
     });
-
-    // Emituj verziju SVIM korisnicima, ali izbegni loop kada stiže sa servera
-    if (!window.isVersionSyncingFromServer) {
-        socket.emit('versionLoaded', images);
-    }
 }
-// Osluškivanje događaja za učitavanje verzije
-socket.on('versionLoaded', (data) => {
-    if (data) {
-        window.isVersionSyncing = true;
-        restoreImages(data);
-        window.isVersionSyncing = false;
-    }
+
+// Po povezivanju na server, zatraži trenutnu verziju
+socket.emit('requestImages');
+
+// Kada stigne trenutna verzija, učitaj je na stranici
+socket.on('restoreImages', (images) => {
+    restoreImages(images);
 });
 
- 
-
-    document.getElementById('downloadPagesButton').addEventListener('click', function () {
+ document.getElementById('downloadPagesButton').addEventListener('click', function () {
         if (savedPages.length === 0) {
             alert('Nema sačuvanih verzija.');
             return;
