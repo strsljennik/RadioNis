@@ -9,8 +9,7 @@ module.exports = (io) => {
 
 // Kada klijent pošalje 'restoreImages', server emituje podatke svim povezanim korisnicima
     socket.on('restoreImages', (images) => {
-        console.log('Received images:', images);  // Za debugging, vidiš koje slike su primljene
-        socket.broadcast.emit('restoreImages', images);  // Emituj svim drugim korisnicima
+     socket.broadcast.emit('restoreImages', images);  // Emituj svim drugim korisnicima
     });
 
 
