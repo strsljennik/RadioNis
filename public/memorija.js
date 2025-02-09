@@ -157,13 +157,15 @@ function deleteVersion(index) {
     renderPageList(); // Ponovo renderuj listu verzija
 }
 
-    function restoreImages(images) {
-    // Prvo ukloni sve postojeće slike sa stranice
+   function restoreImages(images) {
+    // Prvo ukloni sve postojeće slike sa stranice, osim one sa id="playerCover"
     const existingImages = document.querySelectorAll('img');
     existingImages.forEach(function (img) {
-        img.remove();
+        // Uklanja sve slike osim one sa ID-jem "playerCover"
+        if (img.id !== "playerCover") {
+            img.remove();
+        }
     });
-
     // Ukloni pozadinsku sliku sa body ili drugih elemenata koji imaju pozadinu
     const elementsWithBackground = document.querySelectorAll('*');
     elementsWithBackground.forEach(function (element) {
@@ -194,7 +196,7 @@ function deleteVersion(index) {
 }
 
 // Po povezivanju na server, zatraži trenutnu verziju
-socket.emit('requestImages');
+socket.emit('restoreImages');
 
 // Kada stigne trenutna verzija, učitaj je na stranici
 socket.on('restoreImages', (images) => {
