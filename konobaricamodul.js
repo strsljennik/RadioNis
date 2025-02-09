@@ -1,5 +1,5 @@
 module.exports = (io) => {
-    let chatContainerState = { x: 0, y: 0, width: 900, height: 600 };
+    let chatContainerState = { x: 300, y: 200, width: 900, height: 600 };
   let restoreImages ;
   
        io.on('connection', (socket) => {
