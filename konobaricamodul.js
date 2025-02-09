@@ -1,5 +1,5 @@
 module.exports = (io) => {
-    let chatContainerState = { x: 300, y: 200, width: 900, height: 600 };
+    let chatContainerState = { x: 300, y: 100, width: 900, height: 600 };
   let restoreImages ;
   
        io.on('connection', (socket) => {
@@ -16,8 +16,9 @@ module.exports = (io) => {
 
     // Osluškuje novog gosta i šalje mu poruku dobrodošlice
         socket.on('new_guest', () => {
-            const greetingMessage = `Dobro nam došli, osećajte se kao kod kuće i budite nam raspoloženi! 
-                                    Sada će vam vaša Konobarica poslužiti kaficu ☕, a naši DJ-evi će se pobrinuti da vam ispune muzičke želje.`;
+           const greetingMessage = `Dobro nam došli, osećajte se kao kod kuće, i budite nam raspoloženi! Sada će vam vaša Konobarica posluziti kaficu ☕, 
+                                    a naši DJ-evi će se pobrinuti da vam ispune muzičke želje. Registrovanje , Logovanje , Biranje boje , Muzika i sve ostalo 
+    sto vam je potrebno mozete naci na tabli koja se otvara klikom na dugme  G `;
             io.emit('message', {
                 username: '<span class="konobarica">Konobarica</span>',
                 color: 'orange',
