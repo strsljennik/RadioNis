@@ -191,9 +191,3 @@ h1 {
 #gostimodal .close:hover {
     color: red;
 }
-/* SMILE GIF */
-.gif-smiley {
-    width: 150px;
-    height: 150px;
-    vertical-align: middle;
-}
