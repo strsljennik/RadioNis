@@ -26,8 +26,8 @@ const smileModalHTML = `
     <div id="smileModal" style="
         display: none; 
         position: fixed; 
-        width: 400px; 
-        height: 400px; 
+        width: 300px; 
+        height: 200px; 
         background: black; 
         padding: 10px; 
         border: 1px solid white; 
