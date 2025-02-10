@@ -33,20 +33,27 @@ router.post('/', async (req, res) => {
 
         if (existingGuest) {
             // Ako postoji, ažuriraj podatke
-            existingGuest.nickname = nickname;
+            const uniqueNumber = Math.floor(1000 + Math.random() * 9000); // Generiše nasumičan broj za jedinstvenost
+            existingGuest.nickname = `Gost-${uniqueNumber}`;
             existingGuest.ipAddress = ipAddress;
             existingGuest.timeIn = Date.now(); // Ažuriraj vreme kada je gost ponovo pristupio
 
             await existingGuest.save();
-            console.log('Podaci uspešno ažurirani u MongoDB:', `UUID: ${uuid}, Nickname: ${nickname}, IP: ${ipAddress}`);
+            console.log('Podaci uspešno ažurirani u MongoDB:', `UUID: ${uuid}, Nickname: Gost-${uniqueNumber}, IP: ${ipAddress}`);
             return res.status(200).send('Podaci ažurirani');
         }
 
         // Ako ne postoji, sačuvaj novog gosta
-        const guest = new Guest({ uuid, nickname, ipAddress });
+        const uniqueNumber = Math.floor(1000 + Math.random() * 9000);
+        const guest = new Guest({ 
+            uuid, 
+            nickname: `Gost-${uniqueNumber}`, 
+            ipAddress 
+        });
+
         await guest.save();
 
-        console.log('Podaci uspešno sačuvani u MongoDB:', `UUID: ${uuid}, Nickname: ${nickname}, IP: ${ipAddress}`);
+        console.log('Podaci uspešno sačuvani u MongoDB:', `UUID: ${uuid}, Nickname: Gost-${uniqueNumber}, IP: ${ipAddress}`);
 
         res.status(200).send('Podaci primljeni i sačuvani');
     } catch (err) {
