@@ -6,6 +6,7 @@ let newColor;
 let isUnderline = false;
 let isOverline = false;
 const guestsData = {};
+let guests = [];
 
 
 document.getElementById('boldBtn').addEventListener('click', function() {
@@ -56,7 +57,7 @@ document.getElementById('chatInput').addEventListener('keydown', function(event)
             color: currentColor,
             underline: isUnderline,
             overline: isOverline,
-            nickname: nickname,
+            nickname: guests[socket.id],
       });
         this.value = '';
     }
