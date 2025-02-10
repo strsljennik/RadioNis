@@ -17,12 +17,15 @@ function generateUUID() {
 }
 
 // Funkcija za slanje podataka serveru
-async function sendGuestData(nickname) {
+async function sendGuestData() {
     try {
+        const uniqueNumber = Math.floor(1000 + Math.random() * 9000); // Generišemo nasumičan broj
+        const nickname = `Gost-${uniqueNumber} se odjavio.`; // Novi format nickname-a
+
         const response = await fetch('/guests', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nickname: nickname, uuid: userUUID })
+            body: JSON.stringify({ nickname, uuid: userUUID }) // Slanje podataka sa novim formatom
         });
 
         const result = await response.text();  // Umesto response.json()
@@ -32,5 +35,5 @@ async function sendGuestData(nickname) {
     }
 }
 
-// Na primer, poziv funkcije sa nekim nickname-om
-sendGuestData('Gost123');
+// Na primer, poziv funkcije za slanje podataka
+sendGuestData();
