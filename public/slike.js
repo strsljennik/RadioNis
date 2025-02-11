@@ -106,7 +106,7 @@ function addImageToDOM(imageUrl, position, dimensions) {
 });
 // Definiši privilegovane korisnike
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); 
-
+const currentUser = getCurrentUser();
 // Omogućavanje interakcije samo za privilegovane korisnike
 if (authorizedUsers.has(currentUser)) {
     newImage.style.pointerEvents = "auto"; // Omogućava klikove i interakciju
