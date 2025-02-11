@@ -1,20 +1,46 @@
-let isLoggedIn = false; // Status autentifikacije
+document.addEventListener("DOMContentLoaded", () => {
+    const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); // Privilegovani korisnici
+    let isLoggedIn = false; // Status prijave
+    let currentUser = ''; // Trenutni korisnik
 
-document.getElementById('openModal').addEventListener('click', function () {
-    if (!isLoggedIn) {
-        const password = prompt("Unesite lozinku:");
+    // Funkcija koja proverava prijavu korisnika
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        // Ako unesena lozinka odgovara, otvara modal
-        if (password === "123galaksija") {
-            isLoggedIn = true; // Postavljamo status na login
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-socket-id': socket.id  
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => {
+            if (response.ok) {
+                socket.emit('userLoggedIn', username);
+                currentUser = username;  // Postavljanje trenutnog korisnika
+                isLoggedIn = true;  // Korisnik je uspešno prijavljen
+
+                // Ako je korisnik privilegovan, omogućavamo privilegije
+                if (authorizedUsers.has(username)) {
+                    console.log("Admin funkcionalnosti omogućene!");
+                }
+            }
+        });
+    });
+
+    // Otvaranje modala
+    document.getElementById('openModal').addEventListener('click', function () {
+        if (isLoggedIn && authorizedUsers.has(currentUser)) {
+            // Ako je korisnik prijavljen i ima privilegije, otvara modal
             document.getElementById('functionModal').style.display = "block";
         } else {
             alert("Nemate dozvolu da otvorite ovaj panel.");
         }
-    } else {
-        // Ako je već prijavljen, samo otvara modal
-        document.getElementById('functionModal').style.display = "block";
-    }
+    });
 });
 
 // Zatvaranje modala
