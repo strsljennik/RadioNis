@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 // Lista autorizovanih i banovanih korisnika
-const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '__X__']);
+const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
 
 // Skladištenje informacija o gostima
@@ -113,20 +113,6 @@ io.emit('updateGuestList', Object.values(guests));
         io.emit('chat-cleared');
     });
  
-// Mogućnost banovanja korisnika prema nickname-u
-    socket.on('banUser', (nicknameToBan) => {
-        const socketIdToBan = Object.keys(guests).find(key => guests[key] === nicknameToBan);
-
-        if (socketIdToBan) {
-            io.to(socketIdToBan).emit('banned');
-            io.sockets.sockets[socketIdToBan].disconnect();
-            console.log(`Korisnik ${nicknameToBan} (ID: ${socketIdToBan}) je banovan.`);
-        } else {
-            console.log(`Korisnik ${nicknameToBan} nije pronađen.`);
-            socket.emit('userNotFound', nicknameToBan);
-        }
-    });
-
 // Poslati trenutne goste sa bojama novom gostu
 socket.emit('currentGuests', Object.keys(guestsData).map(guestId => ({
     guestId: guestId,
