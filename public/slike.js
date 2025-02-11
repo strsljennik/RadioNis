@@ -106,7 +106,7 @@ function addImageToDOM(imageUrl, position, dimensions) {
 });
 // Definiši privilegovane korisnike
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); 
-  let currentUser = ''; // Trenutni korisnik
+
 // Omogućavanje interakcije samo za privilegovane korisnike
 if (authorizedUsers.has(currentUser)) {
     newImage.style.pointerEvents = "auto"; // Omogućava klikove i interakciju
@@ -261,3 +261,4 @@ document.getElementById("pozadina").addEventListener("click", function() {
 socket.on("updateBackground", (url) => {
     document.body.style.backgroundImage = "url('" + url + "')";
 });
+
