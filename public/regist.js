@@ -1,3 +1,5 @@
+let currentUser = null;
+
 // Registracija korisnika
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -56,10 +58,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     });
 });
 
-// Kada server pošalje događaj 'userLoggedIn' sa rodom
 socket.on('userLoggedIn', (data) => {
-    console.log("Prijavljeni korisnik:", data.username);
-    console.log("Rola korisnika:", data.role);
+    currentUser = data.username;  // Čuvamo username u globalnoj promenljivoj
+    console.log("Prijavljeni korisnik:", currentUser);
 
     if (data.role === 'admin') {
         enableAdminFeatures();
@@ -68,10 +69,11 @@ socket.on('userLoggedIn', (data) => {
     }
 });
 
+
 // Funkcija za omogućavanje admin funkcionalnosti
 function enableAdminFeatures() {
     console.log("Admin funkcionalnosti omogućene!");
-    // Kod za omogućavanje admin funkcionalnosti
+   
 }
 
 // Funkcija za omogućavanje gost funkcionalnosti
