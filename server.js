@@ -33,6 +33,12 @@ app.use(express.static(__dirname + '/public'));
 app.use('/guests', uuidRouter); // Dodavanje ruta u aplikaciju
 app.set('trust proxy', true);
 app.use(cors());
+app.use(cookieParser());
+app.use((req, res, next) => {
+    res.cookie('session', 'value', { samesite: 'Strict', httpOnly: true, secure: true });
+    next();
+});
+
 
 // Rute za registraciju i prijavu
 app.post('/register', (req, res) => register(req, res, io));
