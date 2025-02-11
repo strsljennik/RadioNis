@@ -104,21 +104,21 @@ function addImageToDOM(imageUrl, position, dimensions) {
         alert("Nijedna slika nije selektovana!");
     }
 });
+// Definiši privilegovane korisnike
+const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); 
 
-
-        // Omogućavanje interakcije samo za prijavljene korisnike
-        if (isLoggedIn) {
-            newImage.style.pointerEvents = "auto"; // Omogućava klikove i interakciju
-            enableDragAndResize(newImage); // Uključi funkcionalnost za povlačenje i promenu veličine
-        } else {
-            newImage.style.pointerEvents = "none"; // Onemogućava klikove
-        }
-
-        document.body.appendChild(deleteButton);
-        document.body.appendChild(newImage);
-    }
+// Omogućavanje interakcije samo za privilegovane korisnike
+if (authorizedUsers.has(currentUser)) {
+    newImage.style.pointerEvents = "auto"; // Omogućava klikove i interakciju
+    enableDragAndResize(newImage); // Uključi funkcionalnost za povlačenje i promenu veličine
+} else {
+    newImage.style.pointerEvents = "none"; // Onemogućava klikove
 }
 
+document.body.appendChild(deleteButton);
+document.body.appendChild(newImage);
+}
+}
 // Funkcija za omogućavanje drag-and-resize funkcionalnosti za sliku
 function enableDragAndResize(img) {
     let isResizing = false;
