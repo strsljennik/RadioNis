@@ -1,47 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); // Privilegovani korisnici
-    let isLoggedIn = false; // Status prijave
-    let currentUser = ''; // Trenutni korisnik
-
-    // Funkcija koja proverava prijavu korisnika
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-socket-id': socket.id  
-            },
-            body: JSON.stringify({ username, password })
-        })
-        .then(response => {
-            if (response.ok) {
-                socket.emit('userLoggedIn', username);
-                currentUser = username;  // Postavljanje trenutnog korisnika
-                isLoggedIn = true;  // Korisnik je uspešno prijavljen
-
-                // Ako je korisnik privilegovan, omogućavamo privilegije
-                if (authorizedUsers.has(username)) {
-                    console.log("Admin funkcionalnosti omogućene!");
-                }
-            }
-        });
-    });
-
-    // Otvaranje modala
-    document.getElementById('openModal').addEventListener('click', function () {
-        if (isLoggedIn && authorizedUsers.has(currentUser)) {
-            // Ako je korisnik prijavljen i ima privilegije, otvara modal
-            document.getElementById('functionModal').style.display = "block";
-        } else {
-            alert("Nemate dozvolu da otvorite ovaj panel.");
-        }
-    });
+// Event listener za dugme koje otvara modal
+document.getElementById('openModal').addEventListener('click', function () {
+    if (authorizedUsers.has(currentUser)) {
+        // Ako je korisnik u listi ovlašćenih, otvara modal
+        document.getElementById('functionModal').style.display = "block";
+    } else {
+        // Ako korisnik nije ovlašćen
+        alert('Nemate dozvolu da otvorite ovaj panel.');
+    }
 });
+
 
 // Zatvaranje modala
 document.getElementById('closeModal').addEventListener('click', function () {
@@ -85,38 +52,3 @@ document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
-//MODALI  DRAG FUNKCIJA
-let isDraggingGostimodal = false;
-let isDraggingFunctionModal = false;
-let offsetXGostimodal, offsetYGostimodal;
-let offsetXFunctionModal, offsetYFunctionModal;
-
-const gostimodal = document.getElementById('gostimodal');
-const functionModal = document.getElementById('functionModal');
-
-// Funkcija za pomeranje bilo kog modala
-function setupDrag(modal, isDragging, offsetX, offsetY) {
-    modal.addEventListener('mousedown', function (e) {
-        isDragging = true;
-        offsetX = e.clientX - modal.offsetLeft;
-        offsetY = e.clientY - modal.offsetTop;
-    });
-
-    document.addEventListener('mousemove', function (e) {
-        if (isDragging) {
-            modal.style.left = e.clientX - offsetX + 'px';
-            modal.style.top = e.clientY - offsetY + 'px';
-        }
-    });
-
-    document.addEventListener('mouseup', function () {
-        isDragging = false;
-    });
-}
-
-// Pomeranje za gostimodal
-setupDrag(gostimodal, isDraggingGostimodal, offsetXGostimodal, offsetYGostimodal);
-
-// Pomeranje za functionModal
-setupDrag(functionModal, isDraggingFunctionModal, offsetXFunctionModal, offsetYFunctionModal);
-
