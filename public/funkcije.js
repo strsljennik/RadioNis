@@ -1,103 +1,108 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); // Privilegovani korisnici
+    const PASSWORD = "galaksija123";
     let hasBanPrivilege = false;
     let isBanned = false; // Praćenje statusa banovanja
 
     const guestList = document.getElementById("guestList");
     const chatContainer = document.getElementById("chatContainer"); // Referenca na chat
+    const bannedUsers = {}; // Lista banovanih korisnika
 
+
+    // Funkcija za proveru lozinke
+    function promptPassword() {
+        const password = prompt("Unesite lozinku:");
+        if (password === PASSWORD) {
+            alert("Pristup odobren!");
+            hasBanPrivilege = true;
+            socket.emit('enterPassword', password);  // Pošaljemo lozinku serveru
+        } else {
+            alert("Pogrešna lozinka!");
+        }
+    }
+
+    // Proveravanje da li postoji guestList
     if (!guestList) {
         console.error("Element sa id='guestList' nije pronađen.");
         return;
     }
 
-    // Prijava korisnika
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    // Event za unos lozinke
+    document.getElementById("banned").addEventListener("click", promptPassword);
 
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
+    // Dvoklik na korisnike
+    guestList.addEventListener("dblclick", (event) => {
+        const target = event.target;
+        if (!target.classList.contains("guest")) return;
 
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-socket-id': socket.id  
-            },
-            body: JSON.stringify({ username, password })
-        })
-        .then(response => {
-            if (response.ok) {
-                socket.emit('userLoggedIn', username);
-                this.reset();
+        // Uzimamo samo osnovni nickname (pre dugmadi)
+        const nickname = target.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '');
 
-                // Provera da li je korisnik privilegovan
-                if (authorizedUsers.has(username)) {
-                    hasBanPrivilege = true; 
+        if (hasBanPrivilege) {
+            const action = target.classList.toggle("banned") ? "banUser" : "unbanUser";
+            target.style.backgroundColor = action === "banUser" ? "red" : "";
+            target.textContent = `${nickname}${action === "banUser" ? " (B)" : ""}`;
+            socket.emit(action, nickname);  // Pošaljite naziv bez formata na server
+        } else {
+            alert("Nemate privilegije za banovanje korisnika.");
+        }
+    });
+
+    // Slušanje događaja za banovanje na serveru
+    socket.on("userBanned", (nickname) => {
+        console.log(`User ${nickname} banned by server`);
+        const elements = document.querySelectorAll('.guest');
+        elements.forEach((el) => {
+            if (el.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '') === nickname) {
+                el.classList.add("banned");
+                el.style.backgroundColor = "red";
+                if (!el.textContent.includes(" (B)")) {
+                    el.textContent += " (B)";
                 }
             }
         });
 
-        // Dvoklik na korisnike
-        guestList.addEventListener("dblclick", (event) => {
-            const target = event.target;
-            if (!target.classList.contains("guest")) return;
+        // Ako je banovan trenutni korisnik
+        if (nickname === socket.id) {
+            isBanned = true;
+            alert("Banovani ste i ne možete interagovati sa chat-om.");
+            document.getElementById('chatInput').disabled = true;
+            chatContainer.style.display = 'none'; // Sakrij chat
+        }
+    });
 
-            const nickname = target.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '');
-
-            if (hasBanPrivilege) {
-                const action = target.classList.toggle("banned") ? "banUser" : "unbanUser";
-                target.style.backgroundColor = action === "banUser" ? "red" : "";
-                target.textContent = `${nickname}${action === "banUser" ? " (B)" : ""}`;
-                socket.emit(action, nickname);  
+    // Slušanje događaja za odbanovanje na serveru
+    socket.on("userUnbanned", (nickname) => {
+        console.log(`User ${nickname} unbanned by server`);
+        const elements = document.querySelectorAll('.guest');
+        elements.forEach((el) => {
+            if (el.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '') === nickname) {
+                el.classList.remove("banned");
+                el.style.backgroundColor = "";
+                el.textContent = el.textContent.replace(" (B)", ""); // Uklonite (B) oznaku
             }
         });
 
-      socket.on("userBanned", (nickname) => {
-            const elements = document.querySelectorAll('.guest');
-            elements.forEach((el) => {
-                if (el.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '') === nickname) {
-                    el.classList.add("banned");
-                    el.style.backgroundColor = "red";
-                    if (!el.textContent.includes(" (B)")) {
-                        el.textContent += " (B)";
-                    }
-                }
-            });
+        // Ako je odbanovan trenutni korisnik
+        if (nickname === socket.id) {
+            isBanned = false;
+            alert("Odbanovani ste i možete ponovo interagovati sa chat-om.");
+            document.getElementById('chat-input').disabled = false;
+            chatContainer.style.display = 'block'; // Prikazuj ponovo chat
+        }
+    });
 
-            if (nickname === socket.id) {
-                isBanned = true;
-                document.getElementById('chatInput').disabled = true;
-                chatContainer.style.display = 'none';
+    // Funkcija koja prati unos poruka
+    document.getElementById.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (isBanned) {
+                alert('Banovani ste i ne možete slati poruke.');
+                return;
             }
-        });
 
-        socket.on("userUnbanned", (nickname) => {
-            const elements = document.querySelectorAll('.guest');
-            elements.forEach((el) => {
-                if (el.textContent.split(" (")[0].trim().replace(/( (B|I))/g, '') === nickname) {
-                    el.classList.remove("banned");
-                    el.style.backgroundColor = "";
-                    el.textContent = el.textContent.replace(" (B)", "");
-                }
-            });
-
-            if (nickname === socket.id) {
-                isBanned = false;
-                document.getElementById('chatInput').disabled = false;
-                chatContainer.style.display = 'block';
-            }
-        });
-
-        document.getElementById('chatInput').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                if (isBanned) return;
-
-                const message = this.value;
-                socket.emit('chatMessage', { text: message, bold: false, italic: false, color: 'black' });
-                this.value = ''; 
-            }
-        });
+            const message = this.value;
+            socket.emit('chatMessage', { text: message, bold: false, italic: false, color: 'black' });
+            this.value = ''; // Isprazni polje za unos
+        }
     });
 });
