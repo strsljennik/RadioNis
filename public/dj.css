@@ -79,11 +79,12 @@ button {
 
 button:hover,
 button:focus {
-    background-color: rgba(255, 0, 255, 0.2); /* Ružičasta pozadina pri hover */
-    border-color: #ff00ff; /* Neon ružičasta granica pri hover */
-    color: #ff00ff; /* Neon ružičasta boja teksta */
-    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff; /* Neon efekat na hover */
+    background-color: rgba(255, 255, 255, 0.2); /* Bela neon pozadina pri hover */
+    border-color: #ffffff; /* Bela neon granica pri hover */
+    color: #ffffff; /* Bela neon boja teksta */
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff; /* Neon efekat na hover */
 }
+
  /* Osnovni stil za desktop */
 body {
     font-size: 16px;
@@ -189,5 +190,23 @@ h1 {
 }
 
 #gostimodal .close:hover {
-    color: red;
+    color: white;
+}
+/* UUID MODAL */
+#uuidModal {
+    display: none; /* Skriven po defaultu */
+    position: fixed;
+     left: 0; /* Pozicionira na levu stranu stranice */
+    bottom: 0; /* Obezbeđuje da se modal prostire do dna */
+      z-index: 9999; /* Postavlja modal iznad drugih elemenata */
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+    background: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    resize: both; /* Omogućava promenu veličine */
+    overflow: auto; /* Dodaje skrolovanje ako sadržaj pređe veličinu */
 }
