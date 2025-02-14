@@ -11,7 +11,6 @@ document.getElementById('openModal').addEventListener('click', function () {
     }
 });
 
-
 // Zatvaranje modala
 document.getElementById('closeModal').addEventListener('click', function () {
     document.getElementById('functionModal').style.display = "none";
@@ -54,3 +53,33 @@ document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
+// UUID BAN MODAL
+document.getElementById('govna').addEventListener('click', async function () {
+    let uuidModal = document.getElementById('uuidModal');
+    uuidModal.style.display = (uuidModal.style.display === "block") ? "none" : "block";
+
+    // Prvo šaljemo podatke putem POST rute
+    const response = await fetch('/guests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: 'Gost-7966', uuid: 'aa021f56-b386-4a55-acac-b91777f199ad' }) // Primer podataka
+    });
+
+    if (response.ok) {
+        // Kada su podaci uspešno poslati, pozivamo GET rutu za tog gosta
+        const guestResponse = await fetch('/guests/aa021f56-b386-4a55-acac-b91777f199ad');  // Korišćenje UUID za GET rutu
+
+        if (guestResponse.ok) {
+            const guestData = await guestResponse.json();
+            const uuidList = document.getElementById('uuidList');
+            uuidList.innerHTML = `
+                <p><strong>UUID:</strong> ${guestData.uuid}</p>
+                <p><strong>Nickname:</strong> ${guestData.nickname}</p>
+                <p><strong>IP Adresa:</strong> ${guestData.ipAddress}</p>
+                <hr />
+            `;
+        }
+    } else {
+        console.log('Greška pri slanju podataka.');
+    }
+});
