@@ -65,6 +65,7 @@ io.on('connection', (socket) => {
     const uniqueNumber = generateUniqueNumber();
     const nickname = `Gost-${uniqueNumber}`; // Nadimak korisnika
     guests[socket.id] = nickname; // Dodajemo korisnika u guest list
+ const ipAddress = socket.handshake.address;
    socket.emit('setNickname', nickname);
 
 // Funkcija za generisanje jedinstvenog broja
@@ -80,6 +81,8 @@ io.on('connection', (socket) => {
  // Emitovanje događaja da bi ostali korisnici videli novog gosta
     socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
+ console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
+ socket.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
  // Obrada prijave korisnika
     socket.on('userLoggedIn', (username) => {
@@ -142,7 +145,7 @@ socket.on('updateGuestColor', ({ guestId, newColor }) => {
 
 // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
-        console.log(`${guests[socket.id]} se odjavio.`);
+        console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
         io.emit('updateGuestList', Object.values(guests));
     });
