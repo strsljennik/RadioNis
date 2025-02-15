@@ -65,8 +65,7 @@ io.on('connection', (socket) => {
     const uniqueNumber = generateUniqueNumber();
     const nickname = `Gost-${uniqueNumber}`; // Nadimak korisnika
     guests[socket.id] = nickname; // Dodajemo korisnika u guest list
- const ipAddress = socket.handshake.address;
-   socket.emit('setNickname', nickname);
+ socket.emit('setNickname', nickname);
 
 // Funkcija za generisanje jedinstvenog broja
     function generateUniqueNumber() {
