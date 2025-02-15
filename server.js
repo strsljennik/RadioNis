@@ -4,7 +4,6 @@ const socketIo = require('socket.io');
 const { connectDB } = require('./mongo');
 const { register, login } = require('./prijava');
 const { setupSocketEvents } = require('./banmodul'); // Uvoz funkcije iz banmodula
-const uuidRouter = require('./uuidmodul'); // Putanja do modula
 const konobaricaModul = require('./konobaricamodul'); // Uvoz konobaricamodul.js
 const slikemodul = require('./slikemodul');
 const pingService = require('./ping');
@@ -32,7 +31,6 @@ slikemodul.setSocket(io);
 // Middleware za parsiranje JSON podataka i serviranje statičkih fajlova
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
-app.use('/guests', uuidRouter); // Dodavanje ruta u aplikaciju
 app.set('trust proxy', true);
 app.use(cors());
 
