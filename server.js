@@ -63,6 +63,7 @@ let currentBackground = "";
 io.on('connection', (socket) => {
     // Generisanje jedinstvenog broja za gosta
     const uniqueNumber = generateUniqueNumber();
+    const ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
     const nickname = `Gost-${uniqueNumber}`; // Nadimak korisnika
     guests[socket.id] = nickname; // Dodajemo korisnika u guest list
  socket.emit('setNickname', nickname);
