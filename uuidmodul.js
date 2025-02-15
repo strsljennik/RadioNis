@@ -4,8 +4,6 @@ const router = express.Router();
 
 // Definisanje modela za goste
 const guestSchema = new mongoose.Schema({
-    uuid: { type: String, required: true, unique: true },
-    nickname: { type: String, required: true },
     ipAddress: { type: String, required: true },
     timeIn: { type: Date, default: Date.now },
     timeOut: { type: Date, default: null }
@@ -15,45 +13,30 @@ const Guest = mongoose.model('Guest', guestSchema);
 
 // POST ruta za čuvanje podataka gostiju
 router.post('/', async (req, res) => {
-    const { nickname, uuid } = req.body;
-
-    // Validacija podataka
-    if (!nickname || !uuid) {
-        return res.status(400).json({ error: 'Nedostaju podaci' });
-    }
-
     // Dobijanje IP adrese
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress;
 
-    console.log('IP adresa korisnika:', ipAddress);
-
-    try {
-        // Provera da li postoji gost sa istim UUID-om
-        const existingGuest = await Guest.findOne({ uuid });
+  try {
+        // Proveri da li postoji gost sa istom IP adresom
+        const existingGuest = await Guest.findOne({ ipAddress });
 
         if (existingGuest) {
             // Ako postoji, ažuriraj podatke
-            const uniqueNumber = Math.floor(1000 + Math.random() * 9000); // Generiše nasumičan broj za jedinstvenost
-            existingGuest.nickname = `Gost-${uniqueNumber}`;
-            existingGuest.ipAddress = ipAddress;
             existingGuest.timeIn = Date.now(); // Ažuriraj vreme kada je gost ponovo pristupio
 
             await existingGuest.save();
-            console.log('Podaci uspešno ažurirani u MongoDB:', `UUID: ${uuid}, Nickname: Gost-${uniqueNumber}, IP: ${ipAddress}`);
+            console.log('Podaci uspešno ažurirani u MongoDB:', `IP: ${ipAddress}`);
             return res.status(200).send('Podaci ažurirani');
         }
 
         // Ako ne postoji, sačuvaj novog gosta
-        const uniqueNumber = Math.floor(1000 + Math.random() * 9000);
         const guest = new Guest({ 
-            uuid, 
-            nickname: `Gost-${uniqueNumber}`, 
             ipAddress 
         });
 
         await guest.save();
 
-        console.log('Podaci uspešno sačuvani u MongoDB:', `UUID: ${uuid}, Nickname: Gost-${uniqueNumber}, IP: ${ipAddress}`);
+        console.log('Podaci uspešno sačuvani u MongoDB:', `IP: ${ipAddress}`);
 
         res.status(200).send('Podaci primljeni i sačuvani');
     } catch (err) {
@@ -62,16 +45,16 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET ruta za dobijanje podataka po UUID-u
-router.get('/:uuid', async (req, res) => {
-    const { uuid } = req.params;
+// GET ruta za dobijanje podataka po IP adresi
+router.get('/:ipAddress', async (req, res) => {
+    const { ipAddress } = req.params;
 
     try {
         // Dohvatanje podataka iz MongoDB
-        const guest = await Guest.findOne({ uuid });
+        const guest = await Guest.findOne({ ipAddress });
 
         if (!guest) {
-            return res.status(404).json({ error: 'Podaci za dati UUID nisu pronađeni' });
+            return res.status(404).json({ error: 'Podaci za dati IP nisu pronađeni' });
         }
 
         res.status(200).json(guest);
