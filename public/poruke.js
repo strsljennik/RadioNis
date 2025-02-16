@@ -54,21 +54,20 @@ document.getElementById('NIK').addEventListener('click', function() {
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
 //  BANIRANJE SA IP ADRESOM I MODAL LISTOM
-// Otvaranje modala na klik
+socket.on('logMessage', (message) => {
+    let uuidList = document.getElementById('uuidList'); // Lista unutar modala
+    
+    // Kreiranje novog <li> elementa za poruku
+    let listItem = document.createElement('li');
+    listItem.textContent = message;
+    
+    // Dodavanje poruke u listu
+    uuidList.appendChild(listItem);
+});
+
+// Otvaranje/zatvaranje modala samo kada klikneš na dugme
 document.getElementById('govna').addEventListener('click', function () {
     let uuidModal = document.getElementById('uuidModal');
     uuidModal.style.display = (uuidModal.style.display === "block") ? "none" : "block";
 });
 
-// Prikazivanje loga u modal listi kada stigne sa servera
-socket.on('new-log', function(logMessage) {
-    // Pronalazimo div sa id-jem 'uuidList' i dodajemo novi log
-    const uuidList = document.getElementById('uuidList');
-    
-    // Kreiramo novi element za log
-    const listItem = document.createElement('li');
-    listItem.textContent = logMessage;
-    
-    // Dodajemo log u listu
-    uuidList.appendChild(listItem);
-});
