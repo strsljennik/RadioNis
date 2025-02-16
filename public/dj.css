@@ -194,11 +194,11 @@ h1 {
 }
 /* UUID MODAL */
 #uuidModal {
-    display: none; /* Skriven po defaultu */
+    display: none; 
     position: fixed;
-     left: 0; /* Pozicionira na levu stranu stranice */
-    bottom: 0; /* Obezbeđuje da se modal prostire do dna */
-      z-index: 9999; /* Postavlja modal iznad drugih elemenata */
+    left: 0;
+    bottom: 0;
+    z-index: 9999; 
     width: 400px;
     height: 400px;
     padding: 20px;
@@ -207,6 +207,18 @@ h1 {
     border: 2px solid white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    resize: both; /* Omogućava promenu veličine */
-    overflow: auto; /* Dodaje skrolovanje ako sadržaj pređe veličinu */
+    overflow: auto; 
+    font: italic bold 16px Arial, sans-serif; /* Bold + Italic */
+}
+
+/* Lista poruka */
+#uuidList {
+    padding: 0;
+    margin: 0;
+}
+
+/* Svaka poruka */
+#uuidList li {
+    padding: 8px 0; 
+    border-bottom: 1px solid white; /* Jasna granica */
 }
