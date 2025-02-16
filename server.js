@@ -52,6 +52,7 @@ const guestsData = {};
 let newColor;
 const assignedNumbers = new Set(); // Set za generisane brojeve
 
+
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
 privatmodul(io, guests);
@@ -81,10 +82,13 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
     socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
  console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
- socket.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
-
+io.emit('logMessage', `${guests[socket.id]} se povezao. IP adresa: ${ipAddress}`);
+ 
  // Obrada prijave korisnika
     socket.on('userLoggedIn', (username) => {
+console.log(`${guests[socket.id]} je ${username}. IP adresa korisnika: ${ipAddress}`);
+io.emit('logMessage', `${guests[socket.id]} je ${username}. IP adresa: ${ipAddress}`);
+
         if (authorizedUsers.has(username)) {
             guests[socket.id] = username;
             console.log(`${username} je autentifikovan kao admin.`);
