@@ -1,3 +1,5 @@
+
+
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
 // Event listener za dugme koje otvara modal
@@ -54,41 +56,72 @@ document.getElementById('NIK').addEventListener('click', function() {
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
 //  BANIRANJE SA IP ADRESOM I MODAL LISTOM
-socket.on('logMessage', (message) => {
-    let uuidList = document.getElementById('uuidList'); // Lista unutar modala
-    
-    // Kreiranje novog <li> elementa za poruku
-    let listItem = document.createElement('li');
-    listItem.textContent = message;
-    
-    // Kreiranje input polja za unos dodatnih informacija
-    let infoInput = document.createElement('input');
-    infoInput.type = 'text';
-    infoInput.placeholder = 'Dodaj informaciju...';
-    infoInput.style.marginLeft = '10px';
-    
-    // Provera da li postoji sačuvana informacija za ovu IP adresu
-    socket.emit('getUserNote', message, (savedInfo) => {
-        if (savedInfo) {
-            infoInput.value = savedInfo; // Ako postoji, prikazujemo sačuvanu informaciju
-        }
-    });
+let lozinkaProverena = false; // Promenljiva koja prati da li je lozinka već uneta
 
-    // Kada korisnik unese novu informaciju, sačuvaj je
-    infoInput.addEventListener('blur', function() {
-        socket.emit('saveUserNote', { message, note: infoInput.value }); // Slanje na server
-    });
-
-    // Dodavanje inputa unutar <li> elementa
-    listItem.appendChild(infoInput);
-    uuidList.appendChild(listItem);
-});
-
-// Otvaranje/zatvaranje modala samo kada klikneš na dugme
 document.getElementById('govna').addEventListener('click', function () {
+    if (!lozinkaProverena) {
+        let lozinka = prompt("Unesite lozinku:");
+        if (lozinka === "babaroga") {
+            lozinkaProverena = true; // Postavljamo da je lozinka uneta ispravno
+        } else {
+            alert("Netačna lozinka!");
+            return; // Ako lozinka nije tačna, prekidamo izvršenje funkcije
+        }
+    }
+
+    // Nakon prve tačne lozinke, dugme normalno otvara/zatvara modal
     let uuidModal = document.getElementById('uuidModal');
     uuidModal.style.display = (uuidModal.style.display === "block") ? "none" : "block";
 });
+
+ 
+    uuidModal.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        offsetX = e.clientX - uuidModal.offsetLeft;
+        offsetY = e.clientY - uuidModal.offsetTop;
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+           uuidModal.style.left = e.clientX - offsetX + 'px';
+           uuidModal.style.top = e.clientY - offsetY + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', function () {
+        isDragging = false;
+    });
+
+const uuidList = document.getElementById('uuidList');
+
+    socket.on('logMessage', (message) => {
+        const [_, ipAddress, infoText] = message.match(/IP adresa: (.+) \(Info: (.*)\)/) || [];
+        if (!ipAddress) return; // Ako ne može da izvuče IP adresu, ignorisi
+
+        // Kreiranje <li> elementa za IP adresu
+        let listItem = document.createElement('li');
+        listItem.textContent = `IP: ${ipAddress}`;
+
+        // Kreiranje input polja za unos dodatnog info
+        let infoInput = document.createElement('input');
+        infoInput.type = 'text';
+        infoInput.placeholder = 'Dodaj informaciju...';
+        infoInput.style.marginLeft = '10px';
+
+        // Ako imamo već sačuvan tekst u bazi, ubacujemo ga u polje
+        if (infoText && infoText !== "Nema dodatnog info") {
+            infoInput.value = infoText;
+        }
+
+        // Kada admin unese tekst i izgubi fokus sa polja, čuvamo u bazi
+        infoInput.addEventListener('blur', function() {
+            socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
+        });
+
+        listItem.appendChild(infoInput);
+        uuidList.appendChild(listItem);
+    });
+
 
 // Selektovanje liste
 let selectedItem = null;
@@ -141,6 +174,4 @@ document.getElementById('blokip').addEventListener('click', function() {
         alert("Niste izabrali korisnika za banovanje!");
     }
 });
-
-
 
