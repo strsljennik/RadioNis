@@ -61,7 +61,26 @@ socket.on('logMessage', (message) => {
     let listItem = document.createElement('li');
     listItem.textContent = message;
     
-    // Dodavanje poruke u listu
+    // Kreiranje input polja za unos dodatnih informacija
+    let infoInput = document.createElement('input');
+    infoInput.type = 'text';
+    infoInput.placeholder = 'Dodaj informaciju...';
+    infoInput.style.marginLeft = '10px';
+    
+    // Provera da li postoji sačuvana informacija za ovu IP adresu
+    socket.emit('getUserNote', message, (savedInfo) => {
+        if (savedInfo) {
+            infoInput.value = savedInfo; // Ako postoji, prikazujemo sačuvanu informaciju
+        }
+    });
+
+    // Kada korisnik unese novu informaciju, sačuvaj je
+    infoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { message, note: infoInput.value }); // Slanje na server
+    });
+
+    // Dodavanje inputa unutar <li> elementa
+    listItem.appendChild(infoInput);
     uuidList.appendChild(listItem);
 });
 
@@ -70,4 +89,58 @@ document.getElementById('govna').addEventListener('click', function () {
     let uuidModal = document.getElementById('uuidModal');
     uuidModal.style.display = (uuidModal.style.display === "block") ? "none" : "block";
 });
+
+// Selektovanje liste
+let selectedItem = null;
+
+// Dodavanje event listener-a za klik na stavku u listi
+document.getElementById('uuidList').addEventListener('click', function(event) {
+    // Ako je kliknuto na <li> stavku, postavi je kao selektovanu
+    if (event.target.tagName === 'LI') {
+        // Ako je već selektovana ista stavka, poništi selektovanje
+        if (selectedItem === event.target) {
+            selectedItem.classList.remove('selected');
+            selectedItem = null;
+        } else {
+            // Poništi selektovanje prethodne stavke, ako postoji
+            if (selectedItem) {
+                selectedItem.classList.remove('selected');
+            }
+            // Selektuj novu stavku
+            selectedItem = event.target;
+            selectedItem.classList.add('selected');
+        }
+    }
+});
+
+// Akcija za brisanje
+document.getElementById('delete').addEventListener('click', function() {
+    if (selectedItem) {
+        // Ukloni selektovanu stavku sa liste
+        selectedItem.remove();
+
+      }
+});
+
+document.getElementById('blokip').addEventListener('click', function() {
+    if (selectedItem) {
+        // Ekstrakcija IP adrese pomoću regularnog izraza
+        let ipMatch = selectedItem.textContent.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
+        
+        if (ipMatch) {
+            let ipAddress = ipMatch[0]; // Prava IP adresa iz teksta
+            
+            // Emitovanje događaja za banovanje
+            socket.emit('banUser', ipAddress);
+            
+            console.log(`Banovan korisnik sa IP adresom: ${ipAddress}`);
+        } else {
+            alert("Nije pronađena validna IP adresa!");
+        }
+    } else {
+        alert("Niste izabrali korisnika za banovanje!");
+    }
+});
+
+
 
