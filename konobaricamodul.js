@@ -11,12 +11,18 @@ module.exports = (io) => {
 
     const Banirani = mongoose.model('Banirani', baniraniSchema);
 
-    io.on('connection', (socket) => {
-        console.log('user connected: ' + socket.id);
+const GuestSchema = new mongoose.Schema({
+    ipAddress: String,
+    info: String  // Tekst koji admin upisuje
+});
 
-        socket.emit('updateChatContainer', { ...chatContainerState });
+const Guest = mongoose.model('Guest', GuestSchema);
 
-        socket.on('new_guest', () => {
+
+  io.on('connection', (socket) => {
+    socket.emit('updateChatContainer', { ...chatContainerState });
+
+  socket.on('new_guest', () => {
             const greetingMessage = `Dobro došli , osećajte se kao kod kuće, i budite raspoloženi! Sada će vam vaša Konobarica posluziti kaficu ☕, 
                                     a naši DJ-evi će se pobrinuti da vam ispune muzičke želje. Registrovanje , Logovanje , Biranje boje , Muzika i sve ostalo 
                                     sto vam je potrebno mozete naci na tabli koja se otvara klikom na dugme G`;
@@ -54,9 +60,7 @@ module.exports = (io) => {
             ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
         }
 
-        console.log(`Korisnik povezan: ${ipAddress}`);
-
-        // **Provera da li je IP banovan iz baze**
+            // **Provera da li je IP banovan iz baze**
         Banirani.findOne({ ipAddress })
             .then((isBanned) => {
                 if (isBanned) {
@@ -84,7 +88,27 @@ module.exports = (io) => {
                     });
             }
         });
+//   ZA UNOS TEXTA U MODALU UUID
+ // Proveri da li već postoji unos za ovu IP adresu
+    Guest.findOne({ ipAddress }).then(existingGuest => {
+        if (existingGuest) {
+            io.emit('logMessage', `IP adresa: ${ipAddress} (Info: ${existingGuest.info})`);
+        } else {
+            io.emit('logMessage', `IP adresa: ${ipAddress} (Nema dodatnog info)`);
+        }
+    });
 
-        socket.on('disconnect', () => {});
+    // Kada admin doda info u polje
+    socket.on('saveUserNote', ({ ipAddress, note }) => {
+        Guest.findOneAndUpdate(
+            { ipAddress },
+            { info: note },
+            { upsert: true, new: true }
+        ).then(() => {
+            console.log(`Info sačuvan za ${ipAddress}: ${note}`);
+        });
+    });
+
+     socket.on('disconnect', () => {});
     });
 };
