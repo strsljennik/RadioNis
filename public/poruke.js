@@ -1,5 +1,3 @@
-
-
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
 // Event listener za dugme koje otvara modal
