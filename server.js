@@ -11,8 +11,6 @@ const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom 
 require('dotenv').config();
 const cors = require('cors');
 
-
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -52,7 +50,6 @@ const guestsData = {};
 let newColor;
 const assignedNumbers = new Set(); // Set za generisane brojeve
 
-
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
 privatmodul(io, guests);
@@ -78,28 +75,21 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
         return number;
     }
 
- // Emitovanje događaja da bi ostali korisnici videli novog gosta
-    socket.broadcast.emit('newGuest', nickname);
+socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
- console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 io.emit('logMessage', `${guests[socket.id]} se povezao. IP adresa: ${ipAddress}`);
- 
- // Obrada prijave korisnika
-    socket.on('userLoggedIn', (username) => {
-console.log(`${guests[socket.id]} je ${username}. IP adresa korisnika: ${ipAddress}`);
-io.emit('logMessage', `${guests[socket.id]} je ${username}. IP adresa: ${ipAddress}`);
 
-        if (authorizedUsers.has(username)) {
-            guests[socket.id] = username;
-            console.log(`${username} je autentifikovan kao admin.`);
-        } else {
-            guests[socket.id] = username;
-            console.log(`${username} se prijavio kao gost.`);
-        }
-        io.emit('updateGuestList', Object.values(guests));
-    });
+socket.on('userLoggedIn', (username) => {
+    io.emit('logMessage', `${guests[socket.id]} je ${username}. IP adresa: ${ipAddress}`);
+    
+    if (authorizedUsers.has(username)) {
+        // Ovdje možeš dodati specifične akcije za autorizovane korisnike, ako su potrebne
+    }
+     guests[socket.id] = username;
+    io.emit('updateGuestList', Object.values(guests));
+});
 
- // Obrada slanja chat poruka
+   // Obrada slanja chat poruka
     socket.on('chatMessage', (msgData) => {
         const time = new Date().toLocaleTimeString();
         const messageToSend = {
