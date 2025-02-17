@@ -1,3 +1,5 @@
+
+
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
 // Event listener za dugme koje otvara modal
@@ -90,35 +92,35 @@ document.getElementById('govna').addEventListener('click', function () {
         isDragging = false;
     });
 
-socket.on('logMessage', (message) => {
-    let uuidList = document.getElementById('uuidList'); // Lista unutar modala
-    
-    // Kreiranje novog <li> elementa za poruku
-    let listItem = document.createElement('li');
-    listItem.textContent = message;
-    
-    // Kreiranje input polja za unos dodatnih informacija
-    let infoInput = document.createElement('input');
-    infoInput.type = 'text';
-    infoInput.placeholder = 'Dodaj informaciju...';
-    infoInput.style.marginLeft = '10px';
-    
-    // Provera da li postoji sačuvana informacija za ovu IP adresu
-    socket.emit('getUserNote', message, (savedInfo) => {
-        if (savedInfo) {
-            infoInput.value = savedInfo; // Ako postoji, prikazujemo sačuvanu informaciju
+const uuidList = document.getElementById('uuidList');
+
+    socket.on('logMessage', (message) => {
+        const [_, ipAddress, infoText] = message.match(/IP adresa: (.+) \(Info: (.*)\)/) || [];
+        if (!ipAddress) return; // Ako ne može da izvuče IP adresu, ignorisi
+
+        // Kreiranje <li> elementa za IP adresu
+        let listItem = document.createElement('li');
+        listItem.textContent = `IP: ${ipAddress}`;
+
+        // Kreiranje input polja za unos dodatnog info
+        let infoInput = document.createElement('input');
+        infoInput.type = 'text';
+        infoInput.placeholder = 'Dodaj informaciju...';
+        infoInput.style.marginLeft = '10px';
+
+        // Ako imamo već sačuvan tekst u bazi, ubacujemo ga u polje
+        if (infoText && infoText !== "Nema dodatnog info") {
+            infoInput.value = infoText;
         }
-    });
 
-    // Kada korisnik unese novu informaciju, sačuvaj je
-    infoInput.addEventListener('blur', function() {
-        socket.emit('saveUserNote', { message, note: infoInput.value }); // Slanje na server
-    });
+        // Kada admin unese tekst i izgubi fokus sa polja, čuvamo u bazi
+        infoInput.addEventListener('blur', function() {
+            socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
+        });
 
-    // Dodavanje inputa unutar <li> elementa
-    listItem.appendChild(infoInput);
-    uuidList.appendChild(listItem);
-});
+        listItem.appendChild(infoInput);
+        uuidList.appendChild(listItem);
+    });
 
 
 // Selektovanje liste
