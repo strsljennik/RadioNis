@@ -181,7 +181,7 @@ h1 {
 /* X za zatvaranje */
 #gostimodal .close {
     color: white;
-    font-size: 28px;
+    font-size: 12px;
     font-weight: bold;
     position: absolute;
     top: 0;
