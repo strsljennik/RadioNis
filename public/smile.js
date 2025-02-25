@@ -101,7 +101,7 @@ const smileModalHTML = `
 // Umetanje modalnog HTML-a u telo stranice
 document.body.insertAdjacentHTML('beforeend', smileModalHTML);
 
-const emojiContainer = document.getElementById('smileContainer');
+const emojiContainer = document.getElementById('emojiContainer');
 const emojiFolder = 'emoji gif/';
 
 const pngEmojis = [
