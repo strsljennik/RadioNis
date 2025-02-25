@@ -56,43 +56,10 @@ const smileModalHTML = `
         ">X</button>
         
         <div id="smileContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <span class="smile" onclick="addSmile('☕')">☕</span>
-            <span class="smile" onclick="addSmile('😀')">😀</span>
-            <span class="smile" onclick="addSmile('😂')">😂</span>
-            <span class="smile" onclick="addSmile('😍')">😍</span>
-            <span class="smile" onclick="addSmile('😎')">😎</span>
-            <span class="smile" onclick="addSmile('😢')">😢</span>
-            <span class="smile" onclick="addSmile('😡')">😡</span>
-            <span class="smile" onclick="addSmile('🤔')">🤔</span>
-            <span class="smile" onclick="addSmile('👍')">👍</span>
-            <span class="smile" onclick="addSmile('👎')">👎</span>
-            <span class="smile" onclick="addSmile('😜')">😜</span>
-            <span class="smile" onclick="addSmile('😝')">😝</span>
-            <span class="smile" onclick="addSmile('😻')">😻</span>
-            <span class="smile" onclick="addSmile('🤩')">🤩</span>
-            <span class="smile" onclick="addSmile('🥳')">🥳</span>
-            <span class="smile" onclick="addSmile('🤗')">🤗</span>
-            <span class="smile" onclick="addSmile('🤐')">🤐</span>
-            <span class="smile" onclick="addSmile('🤟')">🤟</span>
-            <span class="smile" onclick="addSmile('💋')">💋</span>
-            <span class="smile" onclick="addSmile('💕')">💕</span>
-            <span class="smile" onclick="addSmile('💞')">💞</span>
-            <span class="smile" onclick="addSmile('❤️')">❤️</span>
-            <span class="smile" onclick="addSmile('💔')">💔</span>
-            <span class="smile" onclick="addSmile('🖤')">🖤</span>
-            <span class="smile" onclick="addSmile('💛')">💛</span>
-            <span class="smile" onclick="addSmile('💚')">💚</span>
-            <span class="smile" onclick="addSmile('🌧️')">🌧️</span>
-            <span class="smile" onclick="addSmile('☀️')">☀️</span>
-            <span class="smile" onclick="addSmile('🌷')">🌷</span>
-            <span class="smile" onclick="addSmile('🚹')">🚹</span>
-            <span class="smile" onclick="addSmile('🚺')">🚺</span>
-            <span class="smile" onclick="addSmile('👁️‍🗨️')">👁️‍🗨️</span>
-            <span class="smile" onclick="addSmile('👀')">👀</span>
         </div>
         
         <hr style="margin: 10px 0; border-color: white;">
-
+        
         <div id="emojiContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
         </div>
     </div>
@@ -103,31 +70,92 @@ if (!document.getElementById('smileModal')) {
 }
 
 const emojiContainer = document.getElementById('emojiContainer');
+const smileContainer = document.getElementById('smileContainer');
 const emojiFolder = 'emoji gif/';
 
-const pngEmojis = [
-    "stik1.png", "stik2.png", "stik3.png", "stik4.png", "stik5.png",
-    "stik6.png", "stik7.png", "stik8.png", "stik9.png", "stik10.png"
+// Spajanje svih slika i emojija u jednu listu
+const allEmojisAndImages = [
+    { type: 'emoji', content: '☕' },
+    { type: 'emoji', content: '😀' },
+    { type: 'emoji', content: '😂' },
+    { type: 'emoji', content: '😍' },
+    { type: 'emoji', content: '😎' },
+    { type: 'emoji', content: '😢' },
+    { type: 'emoji', content: '😡' },
+    { type: 'emoji', content: '🤔' },
+    { type: 'emoji', content: '👍' },
+    { type: 'emoji', content: '👎' },
+    { type: 'emoji', content: '😜' },
+    { type: 'emoji', content: '😝' },
+    { type: 'emoji', content: '😻' },
+    { type: 'emoji', content: '🤩' },
+    { type: 'emoji', content: '🥳' },
+    { type: 'emoji', content: '🤗' },
+    { type: 'emoji', content: '🤐' },
+    { type: 'emoji', content: '🤟' },
+    { type: 'emoji', content: '💋' },
+    { type: 'emoji', content: '💕' },
+    { type: 'emoji', content: '💞' },
+    { type: 'emoji', content: '❤️' },
+    { type: 'emoji', content: '💔' },
+    { type: 'emoji', content: '🖤' },
+    { type: 'emoji', content: '💛' },
+    { type: 'emoji', content: '💚' },
+    { type: 'emoji', content: '🌧️' },
+    { type: 'emoji', content: '☀️' },
+    { type: 'emoji', content: '🌷' },
+    { type: 'emoji', content: '🚹' },
+    { type: 'emoji', content: '🚺' },
+    { type: 'emoji', content: '👁️‍🗨️' },
+    { type: 'emoji', content: '👀' },
+    
+    // PNG slike
+    { type: 'image', content: 'stik1.png' },
+    { type: 'image', content: 'stik2.png' },
+    { type: 'image', content: 'stik3.png' },
+    { type: 'image', content: 'stik4.png' },
+    { type: 'image', content: 'stik5.png' },
+    { type: 'image', content: 'stik6.png' },
+    { type: 'image', content: 'stik7.png' },
+    { type: 'image', content: 'stik8.png' },
+    { type: 'image', content: 'stik9.png' },
+    { type: 'image', content: 'stik10.png' },
+    
+    // GIF slike
+    { type: 'image', content: 'dance.gif' },
+    { type: 'image', content: 'dance1.gif' },
+    { type: 'image', content: 'dance2.gif' },
+    { type: 'image', content: 'dance3.gif' },
+    { type: 'image', content: 'ily1.gif' },
+    { type: 'image', content: 'ily2.gif' },
+    { type: 'image', content: 'man.gif' },
+    { type: 'image', content: 'mira.gif' },
+    { type: 'image', content: 'mira1.gif' },
+    { type: 'image', content: 'rg.gif' },
+    { type: 'image', content: 'srce.gif' },
+    { type: 'image', content: 'srce2.gif' },
+    { type: 'image', content: 'srce3.gif' },
+    { type: 'image', content: 'srce4.gif' }
 ];
 
-pngEmojis.forEach(img => {
-    const emojiImg = document.createElement('img');
-    emojiImg.src = emojiFolder + img;
-    emojiImg.classList.add('smile');
-    emojiImg.onclick = () => addSmile(`<img src='${emojiFolder + img}' alt='emoji'>`);
-    emojiContainer.appendChild(emojiImg);
-});
+// Iteracija kroz sve elemente i dodavanje u DOM
+allEmojisAndImages.forEach(item => {
+    const element = document.createElement('span');
+    let imgElement;
 
-const imageIds = [
-    "dance.gif", "dance1.gif", "dance2.gif", "dance3.gif",
-    "ily1.gif", "ily2.gif", "man.gif", "mira.gif", "mira1.gif",
-    "rg.gif", "srce.gif", "srce2.gif", "srce3.gif", "srce4.gif"
-];
+    if (item.type === 'emoji') {
+        element.textContent = item.content;
+        element.classList.add('smile');
+        element.onclick = () => addSmile(item.content);
+    } else if (item.type === 'image') {
+        imgElement = document.createElement('img');
+        imgElement.src = emojiFolder + item.content;
+        imgElement.classList.add('smile');
+        imgElement.alt = item.content;
+        element.classList.add('smile');
+        element.onclick = () => addSmile(`<img src='${emojiFolder + item.content}' alt='emoji'>`);
+        element.appendChild(imgElement);
+    }
 
-imageIds.forEach(img => {
-    const imgElement = document.createElement('img');
-    imgElement.src = `${emojiFolder}${img}`;
-    imgElement.classList.add('smile');
-    imgElement.onclick = () => addSmile(`<img src='${emojiFolder + img}' alt='emoji'>`);
-    emojiContainer.appendChild(imgElement);
+    smileContainer.appendChild(element);
 });
