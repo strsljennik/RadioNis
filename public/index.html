@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radio Galaksija</title>
-      <script src="/socket.io/socket.io.js"></script>
+     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+   <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="styles.css"> <!-- Povezivanje CSS datoteke -->
     <link rel="stylesheet" href="dj.css"> <!-- Povezivanje dj.css sa index.html -->
     <script>
@@ -46,6 +47,7 @@
         
         <!-- Dugmici unutar modala -->
         <button class="toolbarBtn" id="NIK"> REGISTRACIJA / LOGIN</button>
+ <button id="mira"> *__M__* </button>
         <button class="toolbarBtn" id="boldBtn">Bold</button>
         <button class="toolbarBtn" id="italicBtn">Italic</button>
         <button class="toolbarBtn" id="colorBtn">Color</button>
@@ -65,45 +67,97 @@
     <div class="modal-content">
         <span class="close" id="closeModal">&times;</span>
         
-       <div class="foregroundFunctions">
+            <div class="foregroundFunctions">
             <button id="clearChat">Obriši chat</button>
             <button id="privateMessage">Privat</button>
 <button id="pozadina">Pozadina</button>
+<button id="prozirnost">prozirnost</button>
+<button id="strim">mik+kam</button>
     
 </div>
         
         <div class="backgroundFunctions">
             <button id="addImage"> Slika</button>
-                 <button id="chat"> Chat </button>
+                   <button id="chat"> Chat </button>
             <button id="pesme"> Mixer </button>
-            <button id="govna"> *__X__*</button>
-            
-  </div>
-    
+             <button id="govna"> *__X__* </button>
+<button id="memorija"> *Memorija* </button>
+
+     </div>
+    </div>
+</div>
+
+<!-- Originalni UUID modal -->
 <div id="uuidModal" style="display: none;">
-      <ul id="uuidList"></ul>
+     <ul id="uuidList"></ul>
 <button id="blokip"> Blokip </button>
 <button id="delete"> Delete </button>
 </div>
+
+<div id="memoryForm" style="display: none;">
+     <input type="text" id="pageNameInput" placeholder="Naziv stranice">
+  <button id="savePageButton">Spremi stranicu</button>
+</div>
+<div id="savedPagesMenu"></div>
 
  <div id="messageArea"></div>
 
 <textarea id="chatInput" rows="1" placeholder="Ispeci Pa Reci...Godjaja Lafi..... ❤️" aria-label="Poruka"></textarea>
 
     <div id="guestList"></div>
-    
-      <iframe id="radioIframe" src="https://zeno.fm/player/radio-galaksija?autoplay=true&amp;muted=true" style="display: none; position: fixed; top: 0px; right: 0px; z-index: 9998; border: 5px solid;" title="Radio Galaksija Player"></iframe>
- <img id="playerCover" src="https://i.imgur.com/OFK8Tur.jpeg" width="300" height="139" style="position: fixed; top: 0; right: 0; z-index: 9999; pointer-events: none; display: none;" alt="Cover image of the radio player">
+      <div id="mixer">
+        <audio id="audioPlayer" controls style="position: absolute; top: 0px; left: 0;"></audio>
+        <h2 class="title" style="position: absolute; top: 60px; left: 0;">By *__X__*</h2>
+        <input type="file" id="fileInput" multiple style="position: absolute; top: 90px; left: 0; right: 0; margin-bottom: 10px;">
+
+        <ul id="songList"></ul>
+        
+        <div id="mixer-buttons">
+            <button id="playSelected">Play</button>
+            <button id="deleteSelected">Obriši</button>
             
+             </div>
+    </div>
+
+<div id="strimkocka" style="display: none;">
+      <button id="toggleMicrophone" class="toolbarBtn">Uključi mikrofon</button>
+        <button id="toggleCamera" class="toolbarBtn">Uključi kameru</button>
+</div>
+
+<div id="popup" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <label for="opacityScale">Prozirnost:</label>
+    <input type="range" id="opacityScale" min="0" max="100" value="50">
+    <span id="opacityValue">50%</span>
+  </div>
+</div>
+
+<div id="iframe-container" style="display: none;">
+    <iframe src="https://xat.com/embed/chat.php#id=220525650&gn=MIRJANA_2023" width="650" height="486" frameborder="0" scrolling="no"></iframe>
+    <br>
+    <small>
+        <a target="_BLANK" href="https://xat.com/web_gear/chat/embed.php?id=220525650&GroupName=MIRJANA_2023">Get MIRJANA_2023 chat group</a> |
+        <a target="_BLANK" href="https://xat.com/MIRJANA_2023"> Go to MIRJANA_2023 website</a>
+    </small>
+</div>
+
+
      <script src="regist.js"></script>
  <script src="elementi.js"></script>   
-    <script src="konobarica.js"></script>
+     <script src="konobarica.js"></script>
 <script src="formatiranje.js"></script> 
  <script src="funkcije.js"></script>
 <script src="smile.js"></script> 
 <script src="slike.js"></script>
- <script src="poruke.js"></script>
+   <script src="poruke.js"></script>
     <script src="privat.js"></script>
-    
-</body>
+ <script src="memorija.js"></script>
+    <script src="strim.js"></script>
+  <script src="mira.js"></script>
+   
+<iframe id="radioIframe" src="https://zeno.fm/player/radio-galaksija?autoplay=true&amp;muted=true" width="300" height="139" frameborder="5" scrolling="no" style="display: none; position: fixed; top: 0px; right: 0px; z-index: 9998;" title="Radio Galaksija Player"></iframe>
+ <img id="playerCover" src="https://i.imgur.com/OFK8Tur.jpeg" width="300" height="139" style="position: fixed; top: 0; right: 0; z-index: 9999; pointer-events: none; display: none;" alt="Cover image of the radio player">
+
+ </body>
 </html>
