@@ -98,8 +98,9 @@ const smileModalHTML = `
     </div>
 `;
 
-// Umetanje modalnog HTML-a u telo stranice
-document.body.insertAdjacentHTML('beforeend', smileModalHTML);
+if (!document.getElementById('smileModal')) {
+    document.body.insertAdjacentHTML('beforeend', smileModalHTML);
+}
 
 const emojiContainer = document.getElementById('emojiContainer');
 const emojiFolder = 'emoji gif/';
