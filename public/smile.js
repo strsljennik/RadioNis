@@ -2,6 +2,17 @@
             const smileModal = document.getElementById('smileModal');
             const smilesBtn = document.getElementById('smilesBtn');
 
+     if (smileModal.style.display === 'flex') return;
+
+    const buttonRect = this.getBoundingClientRect();
+    smileModal.style.top = `${buttonRect.bottom + 5}px`;
+    smileModal.style.left = `${buttonRect.left}px`;
+    smileModal.style.display = 'flex';
+
+    // Učitaj sadržaj iz localStorage
+    loadContentFromLocalStorage();
+});
+
             if (smileModal.style.display === 'flex') return; // Ako je modal već otvoren, ne otvaraj ga ponovo
 
             const buttonRect = smilesBtn.getBoundingClientRect();
@@ -168,3 +179,32 @@
 
             smileContainer.appendChild(element);
         });
+function saveContentToLocalStorage() {
+    const content = [];
+
+    // Dodajemo sve slike iz emoji gif foldera u sadržaj
+    const images = document.querySelectorAll('#smileContainer img');
+    images.forEach(img => {
+        content.push(img.src);  // Sačuvaj putanju slike
+    });
+
+    // Spremanje u localStorage
+    localStorage.setItem('emojiGifContent', JSON.stringify(content));
+}
+
+function loadContentFromLocalStorage() {
+    const storedContent = localStorage.getItem('emojiGifContent');
+    
+    if (storedContent) {
+        const content = JSON.parse(storedContent);
+
+        // Dodaj slike ponovo u modal
+        content.forEach(imgSrc => {
+            const imgElement = document.createElement('img');
+            imgElement.src = imgSrc;
+            imgElement.classList.add('smile');
+            smileContainer.appendChild(imgElement);
+        });
+    }
+}
+
