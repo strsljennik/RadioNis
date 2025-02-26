@@ -1,21 +1,28 @@
-// Funkcija za otvaranje modalnog prozora sa smajlovima
+// Funkcija za otvaranje/zaključavanje modalnog prozora sa smajlovima
 document.getElementById('smilesBtn').addEventListener('click', () => {
     const smileModal = document.getElementById('smileModal');
     const { bottom, left } = document.getElementById('smilesBtn').getBoundingClientRect();
-    Object.assign(smileModal.style, {
-        top: `${bottom + 5}px`,
-        left: `${left}px`,
-        display: 'flex'
-    });
+    
+    // Ako je modal trenutno skriven, prikaži ga
+    if (smileModal.style.display === 'none' || smileModal.style.display === '') {
+        Object.assign(smileModal.style, {
+            top: `${bottom + 5}px`,
+            left: `${left}px`,
+            display: 'flex'
+        });
 
-    // Učitaj slike iz localStorage
-    loadImagesFromLocalStorage();
+        // Učitaj slike iz localStorage
+        loadImagesFromLocalStorage();
+    } else {
+        // Ako je modal otvoren, zatvori ga
+        closeSmileModal();
+    }
 });
 
 // Funkcija za učitavanje slika iz localStorage
 const loadImagesFromLocalStorage = () => {
-    const smileModal = document.getElementById('smileModal');
-    smileModal.innerHTML = ''; // Očisti modal pre nego što dodaš nove slike
+    const smileContainer = document.getElementById('smileContainer');
+    smileContainer.innerHTML = ''; // Očisti container pre nego što dodaš nove slike
 
     const allItems = JSON.parse(localStorage.getItem('emojiData')) || [];
     allItems.forEach(item => {
@@ -36,7 +43,7 @@ const loadImagesFromLocalStorage = () => {
             element.appendChild(imgElement);
         }
 
-        smileModal.appendChild(element);
+        smileContainer.appendChild(element);
     });
 };
 
@@ -66,6 +73,26 @@ const closeSmileModal = () => {
     }
 };
 
+// Funkcija za ažuriranje localStorage sa novim podacima
+const updateLocalStorage = (newItems) => {
+    localStorage.setItem('emojiData', JSON.stringify(newItems));
+};
+
+// Funkcija za dodavanje novih slika ili emojija u listu
+const addNewItemToLocalStorage = (newItem) => {
+    // Učitavamo trenutne stavke iz localStorage
+    const allItems = JSON.parse(localStorage.getItem('emojiData')) || [];
+    
+    // Dodajemo novi element (emoji ili sliku)
+    allItems.push(newItem);
+    
+    // Ažuriramo localStorage sa novim podacima
+    updateLocalStorage(allItems);
+
+    // Ponovno učitavanje slika u modal
+    loadImagesFromLocalStorage();
+};
+
 // HTML kod za modal
 const smileModalHTML = `
 <div id="smileModal" style="display:none;position:fixed;width:300px;background:black;padding:10px;border:1px solid white;z-index:1000;overflow-y:auto;border-radius:5px;color:white;flex-wrap:wrap;max-height:400px;">
@@ -73,8 +100,10 @@ const smileModalHTML = `
     <div id="smileContainer" style="display:flex;flex-wrap:wrap;gap:8px;overflow-y:auto;"></div>
 </div>`;
 
+// Dodavanje modala u HTML ako već nije prisutan
 if (!document.getElementById('smileModal')) document.body.insertAdjacentHTML('beforeend', smileModalHTML);
 
+// Folder za slike
 const emojiFolder = 'emoji gif/';
 const allItems = [
     ...['☕', '😀', '😂', '😍', '😎', '😢', '😡', '🤔', '👍', '👎', '😜', '😝', '😻', '🤩', '🥳', '🤗', '🤐', '🤟', '💋', '💕', '💞', '❤️', '💔', '🖤', '💛', '💚', '🌧️', '☀️', '🌷', '🚹', '🚺', '👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
