@@ -68,18 +68,17 @@ const closeSmileModal = () => {
 
 // HTML kod za modal
 const smileModalHTML = `
-<div id="smileModal" style="display:none;position:fixed;width:450px;background:black;padding:10px;border:1px solid white;z-index:1000;overflow-y:auto;border-radius:5px;color:white;flex-wrap:wrap;">
+<div id="smileModal" style="display:none;position:fixed;width:300px;background:black;padding:10px;border:1px solid white;z-index:1000;overflow-y:auto;border-radius:5px;color:white;flex-wrap:wrap;max-height:400px;">
     <button onclick="closeSmileModal()" style="background:red;color:white;border:none;padding:5px 10px;cursor:pointer;float:right;">X</button>
-    <div id="smileContainer" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    <div id="smileContainer" style="display:flex;flex-wrap:wrap;gap:8px;overflow-y:auto;"></div>
 </div>`;
 
 if (!document.getElementById('smileModal')) document.body.insertAdjacentHTML('beforeend', smileModalHTML);
 
-// Popis slika i emojija
 const emojiFolder = 'emoji gif/';
 const allItems = [
     ...['☕', '😀', '😂', '😍', '😎', '😢', '😡', '🤔', '👍', '👎', '😜', '😝', '😻', '🤩', '🥳', '🤗', '🤐', '🤟', '💋', '💕', '💞', '❤️', '💔', '🖤', '💛', '💚', '🌧️', '☀️', '🌷', '🚹', '🚺', '👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
-    ...['stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 'stik6.png', 'stik7.png', 'stik8.png', 'stik9.png', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 'dance3.gif', 'ily1.gif', 'ily2.gif', 'man.gif', 'mira.gif', 'mira1.gif', 'rg.gif', 'srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif'].map(img => ({ type: 'image', content: img }))
+    ...['stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 'stik6.png', 'stik7.png', 'stik8.png', 'ok.gif','stik9.png', 'uzivam.gif','stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 'dance3.gif', 'ily1.gif', 'ily2.gif', 'man.gif', 'mira.gif', 'mira1.gif', 'rg.gif', 'x.gif', 'x1.gif','kiss.gif','kiss1.gif','kiss2.gif','srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif'].map(img => ({ type: 'image', content: img }))
 ];
 
 // Čuvanje slika u localStorage
