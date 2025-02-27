@@ -116,8 +116,8 @@ const allItems = [
   'kiss2.gif', 'srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif', 
   'nov1.gif', 'nov2.gif', 'nov3.gif', 'nov4.gif', 'nov5.gif', 'nov6.gif', 
   'nov7.gif', 'nov8.gif', 'nov9.gif', 'nov10.gif', 'nov11.gif', 'nov12.gif', 
-  'nov13.gif', 'nov14.gif', 'nov15.gif', 'nov16.gif', 'nov17.gif', 'nov18.gif', 
-  'nov19.gif', 'nov20.gif', 'nov21.gif', 'nov22.gif'
+  'nov13.gif', 'nov15.gif', 'nov16.gif', 'nov17.gif', 'nov18.gif', 
+  'nov19.gif', 'nov20.gif', 'nov21.gif'
 ].map(img => ({ type: 'image', content: img }))
 ];
 
