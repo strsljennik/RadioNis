@@ -119,7 +119,9 @@ const allItems = [
   'nov13.gif', 'nov14.gif', 'nov15.gif', 'nov16.gif', 'nov17.gif', 'nov18.gif', 
   'nov19.gif', 'nov20.gif', 'nov21.gif', 'nov22.gif'
 ].map(img => ({ type: 'image', content: img }))
+];
 
+console.log(allItems); // Proveri da li su svi podaci pravilno učitani
 
 // Čuvanje slika u localStorage
 const saveImagesToLocalStorage = () => {
@@ -128,3 +130,4 @@ const saveImagesToLocalStorage = () => {
 
 // Pozivamo funkciju da sačuvamo slike u localStorage
 saveImagesToLocalStorage();
+
