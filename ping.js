@@ -1,17 +1,20 @@
 const axios = require('axios');
 
-// URL tvog servisa na Renderu
-const url = 'https://radiogalaksija.onrender.com/';  // Tvoj URL za servis
+const url = 'https://radiogalaksija.onrender.com/';
 
-// Funkcija koja šalje zahtev ka servisu
 const pingService = async () => {
   try {
     const response = await axios.get(url);
-    console.log(`Ping response: ${response.status}`);  // Ispisuje status odgovora (200 OK)
+    console.log(`Ping response: ${response.status}`);
   } catch (error) {
-    console.error('Error pinging service:', error.message);  // Ispisuje grešku ako nešto krene po zlu
+    console.error('Error pinging service:', error.message);
   }
 };
 
-// Pokreće pingovanje svakih 10 minuta (600000 milisekundi)
-setInterval(pingService, 600000);  // 10 minuta
+// Prvi ping na svakih 5 min (300000 ms)
+setInterval(pingService, 300000);
+
+// Drugi ping na svakih 10 min (600000 ms), ali počinje 3 min kasnije
+setTimeout(() => {
+  setInterval(pingService, 600000);
+}, 180000);
