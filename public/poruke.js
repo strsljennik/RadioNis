@@ -92,7 +92,7 @@ document.getElementById('govna').addEventListener('click', function () {
 
 const uuidList = document.getElementById('uuidList');
 
-    socket.on('logMessage', (message) => {
+    socket.on('new-log', (message) => {
         const [_, ipAddress, infoText] = message.match(/IP adresa: (.+) \(Info: (.*)\)/) || [];
         if (!ipAddress) return; // Ako ne može da izvuče IP adresu, ignorisi
 
