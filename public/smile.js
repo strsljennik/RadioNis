@@ -106,13 +106,13 @@ if (!document.getElementById('smileModal')) document.body.insertAdjacentHTML('be
 // Folder za slike
 const emojiFolder = 'emoji gif/';
 const allItems = [
-    ...['☕', '😀', '😂', '😍', '😎', '😢', '😡', '🤔', '👍', '👎', '😜', '😝', '😻', '🤩', '🥳', '🤗', '🤐', '🤟', '💋', '💕', '💞', '❤️', '💔', '🖤', '💛', '💚', '🌧️', '☀️', '🌷', '🚹', '🚺', '👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
+    ...['☕', '😀', '😂', '😍', '😎', '😢', '😡',  '👍', '👎',  '❤️', '💔', '🖤', '💛', '💚', '🌷','👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
     ...[
   'stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 
   'stik6.png', 'stik7.png', 'stik8.png', 'ok.gif', 'stik9.png', 
   'uzivam.gif', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 
-  'dance3.gif', 'ily1.gif', 'ily2.gif', 'mira.gif', 
-  'mira1.gif', 'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
+  'dance3.gif', 'ily1.gif', 'ily2.gif', 
+ 'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
   'kiss2.gif', 'srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif', 
   'nov1.gif', 'nov3.gif', 'nov4.gif', 'nov5.gif', 'nov6.gif', 
   'nov7.gif', 'nov8.gif', 'nov9.gif', 'nov10.gif', 'nov11.gif', 'nov12.gif', 
