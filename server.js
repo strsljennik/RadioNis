@@ -11,6 +11,8 @@ const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom 
 require('dotenv').config();
 const cors = require('cors');
 
+
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -75,21 +77,25 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
         return number;
     }
 
-socket.broadcast.emit('newGuest', nickname);
+ // Emitovanje događaja da bi ostali korisnici videli novog gosta
+    socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
-io.emit('logMessage', `${guests[socket.id]} se povezao. IP adresa: ${ipAddress}`);
+ console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
+ socket.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
-socket.on('userLoggedIn', (username) => {
-    io.emit('logMessage', `${guests[socket.id]} je ${username}. IP adresa: ${ipAddress}`);
-    
-    if (authorizedUsers.has(username)) {
-        // Ovdje možeš dodati specifične akcije za autorizovane korisnike, ako su potrebne
-    }
-     guests[socket.id] = username;
-    io.emit('updateGuestList', Object.values(guests));
-});
+ // Obrada prijave korisnika
+    socket.on('userLoggedIn', (username) => {
+        if (authorizedUsers.has(username)) {
+            guests[socket.id] = username;
+            console.log(`${username} je autentifikovan kao admin.`);
+        } else {
+            guests[socket.id] = username;
+            console.log(`${username} se prijavio kao gost.`);
+        }
+        io.emit('updateGuestList', Object.values(guests));
+    });
 
-   // Obrada slanja chat poruka
+ // Obrada slanja chat poruka
     socket.on('chatMessage', (msgData) => {
         const time = new Date().toLocaleTimeString();
         const messageToSend = {
