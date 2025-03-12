@@ -1,3 +1,4 @@
+
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
 // Event listener za dugme koje otvara modal
@@ -90,35 +91,72 @@ document.getElementById('govna').addEventListener('click', function () {
         isDragging = false;
     });
 
-const uuidList = document.getElementById('uuidList');
+socket.on('logMessage', (message) => {
+    const match = message.match(/IP adresa: (.+) \(Info: (.*)\)$/);
+    if (!match) return; // Ako poruka ne odgovara formatu, ništa ne radimo
 
-    socket.on('new-log', (message) => {
-        const [_, ipAddress, infoText] = message.match(/IP adresa: (.+) \(Info: (.*)\)/) || [];
-        if (!ipAddress) return; // Ako ne može da izvuče IP adresu, ignorisi
+    const ipAddress = match[1];
+    const infoText = match[2];
 
-        // Kreiranje <li> elementa za IP adresu
-        let listItem = document.createElement('li');
-        listItem.textContent = `IP: ${ipAddress}`;
+    // Kreiramo <li> element za prikaz u listi
+    let listItem = document.createElement('li');
+    
+    // Kreiramo i dodajemo span za prikaz IP adrese
+    let ipSpan = document.createElement('span');
+    ipSpan.textContent = `IP: ${ipAddress}`;
+    listItem.appendChild(ipSpan);
 
-        // Kreiranje input polja za unos dodatnog info
-        let infoInput = document.createElement('input');
-        infoInput.type = 'text';
-        infoInput.placeholder = 'Dodaj informaciju...';
-        infoInput.style.marginLeft = '10px';
+    // Kreiramo input polje za unos dodatne informacije
+    let infoInput = document.createElement('input');
+    infoInput.type = 'text';
+    infoInput.placeholder = 'Dodaj informaciju...';
+    infoInput.style.marginLeft = '10px';
+    
+    // Ako već postoji sačuvana informacija, popunjavamo input
+    if (infoText && infoText !== "Nema dodatnog info") {
+        infoInput.value = infoText;
+    }
 
-        // Ako imamo već sačuvan tekst u bazi, ubacujemo ga u polje
-        if (infoText && infoText !== "Nema dodatnog info") {
-            infoInput.value = infoText;
-        }
+    // Dodajemo input u <li> kao deo list item-a
+    listItem.appendChild(infoInput);
 
-        // Kada admin unese tekst i izgubi fokus sa polja, čuvamo u bazi
-        infoInput.addEventListener('blur', function() {
-            socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
-        });
+    // Dodajemo <li> u listu u modal prozoru
+    document.getElementById('uuidList').appendChild(listItem);
 
-        listItem.appendChild(infoInput);
-        uuidList.appendChild(listItem);
+    // Kad input polje izgubi fokus (blur), čuvamo promene na serveru
+    infoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
     });
+
+    // Sada dodajemo još jednu funkcionalnost iz druge verzije koda, gde unosimo sve potrebne informacije
+    const uuidList = document.getElementById('uuidList'); // Element iz tvog HTML-a
+
+    // Kreiranje novog <li> elementa koji prikazuje celu poruku
+    let fullListItem = document.createElement('li');
+    fullListItem.textContent = message; // Poruka sadrži sve potrebne informacije
+
+    // Kreiranje input polja za unos dodatnih informacija
+    let fullInfoInput = document.createElement('input');
+    fullInfoInput.type = 'text';
+    fullInfoInput.placeholder = 'Dodaj informaciju...';
+    fullInfoInput.style.marginLeft = '10px';
+
+    // Provera da li postoji već sačuvana informacija za ovu poruku
+    socket.emit('getUserNote', message, (savedInfo) => {
+        if (savedInfo) {
+            fullInfoInput.value = savedInfo;
+        }
+    });
+
+    // Kada admin unese novu informaciju i izgubi fokus, sačuvaj je
+    fullInfoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { message, note: fullInfoInput.value });
+    });
+
+    // Dodavanje input polja unutar <li> elementa i prikaz u listi
+    fullListItem.appendChild(fullInfoInput);
+    uuidList.appendChild(fullListItem);
+});
 
 
 // Selektovanje liste
