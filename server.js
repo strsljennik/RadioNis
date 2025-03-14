@@ -56,6 +56,7 @@ const assignedNumbers = new Set(); // Set za generisane brojeve
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
 privatmodul(io, guests);
 let currentBackground = "";
+let textElements = [];
 
 // Socket.io događaji
 io.on('connection', (socket) => {
@@ -140,6 +141,33 @@ socket.on('updateGuestColor', ({ guestId, newColor }) => {
         console.log("Nova pozadina:", url);
         currentBackground = url;
         io.emit("updateBackground", url);
+    });
+
+     // Emit current state to the new user
+    socket.emit('currentState', textElements);
+
+    socket.on('newText', (data) => {
+        // Add the new text element to the current state
+        textElements.push(data);
+        // Emit to all other clients
+        socket.broadcast.emit('newText', data);
+    });
+
+    socket.on('deleteText', (data) => {
+        // Remove the text element from the current state
+        textElements = textElements.filter((_, index) => index !== data.index);
+        // Emit to all other clients
+        socket.broadcast.emit('deleteText', data);
+    });
+
+    socket.on('positionChange', (data) => {
+        // Update the position of the text element in the current state
+        if (textElements[data.index]) {
+            textElements[data.index].x = data.x;
+            textElements[data.index].y = data.y;
+        }
+        // Emit to all other clients
+        socket.broadcast.emit('positionChange', data);
     });
 
 // Obrada diskonekcije korisnika
