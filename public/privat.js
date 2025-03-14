@@ -120,61 +120,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 //ANIMIRANITEXT
+document.addEventListener("DOMContentLoaded", function () {
+    const htmlContent = `
+        <label for="passwordInput">Lozinka:</label>
+        <input type="password" id="passwordInput" placeholder="nemogusvi">
+        <button id="loginBtn">Prijavi se</button>
 
-document.addEventListener("DOMContentLoaded", function() {
-  // HTML sadržaj kao stringovi
-const commandTableHTML = `
+        <div class="command-table">
+            <label>Tekst: <input type="text" id="textInput" value="Animirani tekst"></label>
+            <label>Boja teksta: <input type="color" id="textColor" value="#ffffff"></label>
+            <label>Font: 
+                <select id="fontSelect">
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                </select>
+            </label>
+            <label>Animacija: 
+                <select id="animationSelect">
+                    <option value="bounce">Bounce</option>
+                    <option value="fadeIn">Fade In</option>
+                    <option value="zoom">Zoom</option>
+                    <option value="shake">Shake</option>
+                    <option value="slideUp">Slide Up</option>
+                    <option value="rotateX">RotateX</option>
+                    <option value="rotateY">RotateY</option>
+                    <option value="rotateZ">RotateZ</option>
+                    <option value="rotate3D">Rotate3D</option>
+                    <option value="marquee">Marquee</option>
+                </select>
+            </label>
+            <label>Brzina animacije:
+                <input type="range" id="speedRange" min="1" max="20" value="1">
+            </label>
+            <label>Veličina fonta:
+                <input type="range" id="fontSize" min="10" max="100" value="50">
+            </label>
+            <button id="generateBtn">Generiši tekst</button>
+            <button id="clearBtn">Obriši selektovani tekst</button>
+            <button id="showListBtn">Kreiraj listu</button>
+            <div id="textCounter">Trenutni broj tekstova: 0</div>
+        </div>
 
- <label for="passwordInput">Lozinka:</label>
-<input type="password" id="passwordInput" placeholder="nemogusvi">
-<button id="loginBtn">Prijavi se</button>
+        <div id="textContainer"></div>
+        <div id="popupOverlay" class="popup-overlay"></div>
+        <div id="popup" class="popup">
+            <h2>Lista Tekstova</h2>
+            <ul id="textList" class="text-list"></ul>
+            <button id="closePopupBtn">Zatvori</button>
+        </div>
+    `;
 
-  <div class="command-table">
-    <label>Tekst: <input type="text" id="textInput" value="Animirani tekst"></label>
-    <label>Boja teksta: <input type="color" id="textColor" value="#ffffff"></label>
-    <label>Font: 
-      <select id="fontSelect">
-        <option value="Arial">Arial</option>
-        <option value="Verdana">Verdana</option>
-        <option value="Courier New">Courier New</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Times New Roman">Times New Roman</option>
-      </select>
-    </label>
-    <label>Animacija: 
-      <select id="animationSelect">
-        <option value="bounce">Bounce</option>
-        <option value="fadeIn">Fade In</option>
-        <option value="zoom">Zoom</option>
-        <option value="shake">Shake</option>
-        <option value="slideUp">Slide Up</option>
-        <option value="rotateX">RotateX</option>
-        <option value="rotateY">RotateY</option>
-        <option value="rotateZ">RotateZ</option>
-        <option value="rotate3D">Rotate3D</option>
-        <option value="marquee">Marquee</option>
-      </select>
-    </label>
-    <label>Brzina animacije:
-      <input type="range" id="speedRange" min="1" max="20" value="1">
-    </label>
-    <label>Veličina fonta:
-      <input type="range" id="fontSize" min="10" max="100" value="50">
-    </label>
-    <button id="generateBtn">Generiši tekst</button>
-    <button id="clearBtn">Obriši selektovani tekst</button>
-    <button id="showListBtn">Kreiraj listu</button>
-    <div id="textCounter">Trenutni broj tekstova: 0</div>
-  </div>
-
-  <div id="textContainer"></div>
-  <div id="popupOverlay" class="popup-overlay"></div>
-  <div id="popup" class="popup">
-    <h2>Lista Tekstova</h2>
-    <ul id="textList" class="text-list"></ul>
-    <button id="closePopupBtn">Zatvori</button>
-  </div>
-  `;
+    document.body.innerHTML += htmlContent;
+});
 
 document.addEventListener("DOMContentLoaded", function () {
  const passwordInput = document.getElementById("passwordInput");
