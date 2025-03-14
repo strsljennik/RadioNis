@@ -119,12 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+//ANIMIRANITEXT
+
 document.addEventListener("DOMContentLoaded", function() {
   // HTML sadržaj kao stringovi
   const commandTableHTML = `
+
     <div class="command-table">
       <label>Tekst: <input type="text" id="textInput" value="Animirani tekst"></label>
       <label>Boja teksta: <input type="color" id="textColor" value="#ffffff"></label>
+      <label for="passwordInput">Lozinka:</label>
+<input type="password" id="passwordInput" placeholder="nemogusvi">
+<button id="loginBtn">Prijavi se</button>
       <label>Font: 
         <select id="fontSelect">
           <option value="Arial">Arial</option>
@@ -202,6 +208,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+     const passwordInput = document.getElementById("passwordInput");
+  const loginBtn = document.getElementById("loginBtn");
   const textInput = document.getElementById("textInput");
   const textColorInput = document.getElementById("textColor");
   const fontSelect = document.getElementById("fontSelect");
@@ -380,23 +388,25 @@ document.addEventListener("DOMContentLoaded", function () {
       let isDragging = false;
       let offsetX, offsetY;
 
-      textElement.addEventListener("mousedown", function (e) {
-        if (selectedTextElement === textElement) {
-          textElement.classList.remove("selected");
-          selectedTextElement = null;
-        } else {
-          if (selectedTextElement) {
-            selectedTextElement.classList.remove("selected");
-          }
-          textElement.classList.add("selected");
-          selectedTextElement = textElement;
+       textElement.addEventListener("mousedown", function (e) {
+      if (selectedTextElement === textElement) {
+        // Ako je tekst već selektovan, ukloni granice
+        textElement.classList.remove("selected");
+        selectedTextElement = null; // Ukloni selektovani tekst
+      } else {
+        // Ako nije selektovan, selektuj ga i dodaj granice
+        if (selectedTextElement) {
+          selectedTextElement.classList.remove("selected"); // Ukloni granice sa prethodno selektovanog
         }
+        textElement.classList.add("selected");
+        selectedTextElement = textElement; // Postavi trenutni selektovani tekst
+      }
 
-        isDragging = true;
-        offsetX = e.clientX - textElement.getBoundingClientRect().left;
-        offsetY = e.clientY - textElement.getBoundingClientRect().top;
-        textElement.style.cursor = "grabbing";
-      });
+      isDragging = true;
+      offsetX = e.clientX - textElement.getBoundingClientRect().left;
+      offsetY = e.clientY - textElement.getBoundingClientRect().top;
+      textElement.style.cursor = "grabbing";
+    });
 
       document.addEventListener("mousemove", function (e) {
         if (!isDragging) return;
@@ -460,3 +470,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+const validPassword = "mirjana";
+
+  // Funkcija za autentifikaciju
+  loginBtn.addEventListener("click", function () {
+    const enteredPassword = passwordInput.value;
+    if (enteredPassword === validPassword) {
+      isAuthenticated = true;
+      alert("Uspešno ste prijavljeni!");
+      // Omogućite dugme za generisanje teksta
+      generateBtn.disabled = false;
+    } else {
+      alert("Pogrešna lozinka. Pokušajte ponovo.");
+    }
+  });
+
+  // Onemogućite dugme za generisanje teksta dok korisnik nije autentifikovan
+  generateBtn.disabled = true;
+
+  // Ostatak vašeg koda za generisanje teksta
+  generateBtn.addEventListener("click", function () {
+    if (isAuthenticated) {
+      // Vaš postojeći kod za generisanje teksta
+    } else {
+      alert("Morate biti prijavljeni da biste generisali tekst.");
+    }
+  });
