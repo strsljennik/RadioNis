@@ -125,90 +125,61 @@ document.addEventListener("DOMContentLoaded", function() {
   // HTML sadržaj kao stringovi
   const commandTableHTML = `
 
-    <div class="command-table">
-      <label>Tekst: <input type="text" id="textInput" value="Animirani tekst"></label>
-      <label>Boja teksta: <input type="color" id="textColor" value="#ffffff"></label>
-      <label for="passwordInput">Lozinka:</label>
+ <label for="passwordInput">Lozinka:</label>
 <input type="password" id="passwordInput" placeholder="nemogusvi">
 <button id="loginBtn">Prijavi se</button>
-      <label>Font: 
-        <select id="fontSelect">
-          <option value="Arial">Arial</option>
-          <option value="Verdana">Verdana</option>
-          <option value="Courier New">Courier New</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Times New Roman">Times New Roman</option>
-        </select>
-      </label>
-      <label>Animacija: 
-        <select id="animationSelect">
-          <option value="bounce">Bounce</option>
-          <option value="fadeIn">Fade In</option>
-          <option value="zoom">Zoom</option>
-          <option value="shake">Shake</option>
-          <option value="slideUp">Slide Up</option>
-          <option value="rotateX">RotateX</option>
-          <option value="rotateY">RotateY</option>
-          <option value="rotateZ">RotateZ</option>
-          <option value="rotate3D">Rotate3D</option>
-          <option value="marquee">Marquee</option>
-        </select>
-      </label>
-      <label>Brzina animacije:
-        <input type="range" id="speedRange" min="1" max="20" value="1">
-      </label>
-      <label>Veličina fonta:
-        <input type="range" id="fontSize" min="10" max="100" value="50">
-      </label>
-      <button id="generateBtn">Generiši tekst</button>
-      <button id="clearBtn">Obriši selektovani tekst</button>
-      <button id="showListBtn">Kreiraj listu</button>
-      <div id="textCounter">Trenutni broj tekstova: 0</div>
-    </div>
-  `;
 
-  const textContainerHTML = `
-    <div id="textContainer"></div>
-  `;
+  <div class="command-table">
+    <label>Tekst: <input type="text" id="textInput" value="Animirani tekst"></label>
+    <label>Boja teksta: <input type="color" id="textColor" value="#ffffff"></label>
+    <label>Font: 
+      <select id="fontSelect">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+      </select>
+    </label>
+    <label>Animacija: 
+      <select id="animationSelect">
+        <option value="bounce">Bounce</option>
+        <option value="fadeIn">Fade In</option>
+        <option value="zoom">Zoom</option>
+        <option value="shake">Shake</option>
+        <option value="slideUp">Slide Up</option>
+        <option value="rotateX">RotateX</option>
+        <option value="rotateY">RotateY</option>
+        <option value="rotateZ">RotateZ</option>
+        <option value="rotate3D">Rotate3D</option>
+        <option value="marquee">Marquee</option>
+      </select>
+    </label>
+    <label>Brzina animacije:
+      <input type="range" id="speedRange" min="1" max="20" value="1">
+    </label>
+    <label>Veličina fonta:
+      <input type="range" id="fontSize" min="10" max="100" value="50">
+    </label>
+    <button id="generateBtn">Generiši tekst</button>
+    <button id="clearBtn">Obriši selektovani tekst</button>
+    <button id="showListBtn">Kreiraj listu</button>
+    <div id="textCounter">Trenutni broj tekstova: 0</div>
+  </div>
 
-  const popupOverlayHTML = `
-    <div id="popupOverlay" class="popup-overlay"></div>
-  `;
+  <div id="textContainer"></div>
+  <div id="popupOverlay" class="popup-overlay"></div>
+  <div id="popup" class="popup">
+    <h2>Lista Tekstova</h2>
+    <ul id="textList" class="text-list"></ul>
+    <button id="closePopupBtn">Zatvori</button>
+  </div>
 
-  const popupHTML = `
-    <div id="popup" class="popup">
-      <h2>Lista Tekstova</h2>
-      <ul id="textList" class="text-list"></ul>
-      <button id="closePopupBtn">Zatvori</button>
-    </div>
-  `;
-
-  // Dodavanje HTML sadržaja u body
-  const body = document.body;
-  body.insertAdjacentHTML('beforeend', commandTableHTML);
-  body.insertAdjacentHTML('beforeend', textContainerHTML);
-  body.insertAdjacentHTML('beforeend', popupOverlayHTML);
-  body.insertAdjacentHTML('beforeend', popupHTML);
-
-  // Pronaći dugme za otvaranje/zatvaranje command table
-  const anitextButton = document.getElementById("anitext");
-  const commandTable = document.querySelector(".command-table");
-
-  // Početno stanje: command table je skriven
-  commandTable.style.display = "none"; 
-
-  // Funkcija za otvaranje/zatvaranje command table
-  anitextButton.addEventListener("click", function() {
-    if (commandTable.style.display === "none" || commandTable.style.display === "") {
-      commandTable.style.display = "block"; // Otvori command table
-    } else {
-      commandTable.style.display = "none"; // Zatvori command table
-    }
-  });
-});
-
+  <script>
 document.addEventListener("DOMContentLoaded", function () {
-     const passwordInput = document.getElementById("passwordInput");
+  const socket = io(); // Poveži se na socket server
+
+ const passwordInput = document.getElementById("passwordInput");
   const loginBtn = document.getElementById("loginBtn");
   const textInput = document.getElementById("textInput");
   const textColorInput = document.getElementById("textColor");
@@ -286,29 +257,27 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDragging = false;
     let offsetX, offsetY;
 
-   textElement.addEventListener("mousedown", function (e) {
-    if (!authorizedUsers.has(currentUser)) {
-        return; // Blokira akciju ako korisnik nije ovlašćen
-    }
-
-    if (selectedTextElement === textElement) {
+    textElement.addEventListener("mousedown", function (e) {
+      if (selectedTextElement === textElement) {
+        // Ako je tekst već selektovan, ukloni granice
         textElement.classList.remove("selected");
-        selectedTextElement = null;
-    } else {
+        selectedTextElement = null; // Ukloni selektovani tekst
+      } else {
+        // Ako nije selektovan, selektuj ga i dodaj granice
         if (selectedTextElement) {
-            selectedTextElement.classList.remove("selected");
+          selectedTextElement.classList.remove("selected"); // Ukloni granice sa prethodno selektovanog
         }
         textElement.classList.add("selected");
-        selectedTextElement = textElement;
-    }
+        selectedTextElement = textElement; // Postavi trenutni selektovani tekst
+      }
 
-    isDragging = true;
-    offsetX = e.clientX - textElement.getBoundingClientRect().left;
-    offsetY = e.clientY - textElement.getBoundingClientRect().top;
-    textElement.style.cursor = "grabbing";
-});
+      isDragging = true;
+      offsetX = e.clientX - textElement.getBoundingClientRect().left;
+      offsetY = e.clientY - textElement.getBoundingClientRect().top;
+      textElement.style.cursor = "grabbing";
+    });
 
- document.addEventListener("mousemove", function (e) {
+    document.addEventListener("mousemove", function (e) {
       if (!isDragging) return;
       let x = e.clientX - offsetX;
       let y = e.clientY - offsetY;
@@ -388,25 +357,23 @@ document.addEventListener("DOMContentLoaded", function () {
       let isDragging = false;
       let offsetX, offsetY;
 
-       textElement.addEventListener("mousedown", function (e) {
-      if (selectedTextElement === textElement) {
-        // Ako je tekst već selektovan, ukloni granice
-        textElement.classList.remove("selected");
-        selectedTextElement = null; // Ukloni selektovani tekst
-      } else {
-        // Ako nije selektovan, selektuj ga i dodaj granice
-        if (selectedTextElement) {
-          selectedTextElement.classList.remove("selected"); // Ukloni granice sa prethodno selektovanog
+      textElement.addEventListener("mousedown", function (e) {
+        if (selectedTextElement === textElement) {
+          textElement.classList.remove("selected");
+          selectedTextElement = null;
+        } else {
+          if (selectedTextElement) {
+            selectedTextElement.classList.remove("selected");
+          }
+          textElement.classList.add("selected");
+          selectedTextElement = textElement;
         }
-        textElement.classList.add("selected");
-        selectedTextElement = textElement; // Postavi trenutni selektovani tekst
-      }
 
-      isDragging = true;
-      offsetX = e.clientX - textElement.getBoundingClientRect().left;
-      offsetY = e.clientY - textElement.getBoundingClientRect().top;
-      textElement.style.cursor = "grabbing";
-    });
+        isDragging = true;
+        offsetX = e.clientX - textElement.getBoundingClientRect().left;
+        offsetY = e.clientY - textElement.getBoundingClientRect().top;
+        textElement.style.cursor = "grabbing";
+      });
 
       document.addEventListener("mousemove", function (e) {
         if (!isDragging) return;
