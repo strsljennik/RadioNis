@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", function() {
   // HTML sadržaj kao stringovi
 const commandTableHTML = `
-`;
+
  <label for="passwordInput">Lozinka:</label>
 <input type="password" id="passwordInput" placeholder="nemogusvi">
 <button id="loginBtn">Prijavi se</button>
@@ -174,6 +174,7 @@ const commandTableHTML = `
     <ul id="textList" class="text-list"></ul>
     <button id="closePopupBtn">Zatvori</button>
   </div>
+  `;
 
 document.addEventListener("DOMContentLoaded", function () {
  const passwordInput = document.getElementById("passwordInput");
