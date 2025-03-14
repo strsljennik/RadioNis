@@ -175,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function() {
     <button id="closePopupBtn">Zatvori</button>
   </div>
 
-  <script>
 document.addEventListener("DOMContentLoaded", function () {
  const passwordInput = document.getElementById("passwordInput");
   const loginBtn = document.getElementById("loginBtn");
