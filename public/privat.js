@@ -177,8 +177,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const socket = io(); // Poveži se na socket server
-
  const passwordInput = document.getElementById("passwordInput");
   const loginBtn = document.getElementById("loginBtn");
   const textInput = document.getElementById("textInput");
