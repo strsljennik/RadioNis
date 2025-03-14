@@ -278,27 +278,29 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDragging = false;
     let offsetX, offsetY;
 
-    textElement.addEventListener("mousedown", function (e) {
-      if (selectedTextElement === textElement) {
-        // Ako je tekst već selektovan, ukloni granice
+   textElement.addEventListener("mousedown", function (e) {
+    if (!authorizedUsers.has(currentUser)) {
+        return; // Blokira akciju ako korisnik nije ovlašćen
+    }
+
+    if (selectedTextElement === textElement) {
         textElement.classList.remove("selected");
-        selectedTextElement = null; // Ukloni selektovani tekst
-      } else {
-        // Ako nije selektovan, selektuj ga i dodaj granice
+        selectedTextElement = null;
+    } else {
         if (selectedTextElement) {
-          selectedTextElement.classList.remove("selected"); // Ukloni granice sa prethodno selektovanog
+            selectedTextElement.classList.remove("selected");
         }
         textElement.classList.add("selected");
-        selectedTextElement = textElement; // Postavi trenutni selektovani tekst
-      }
+        selectedTextElement = textElement;
+    }
 
-      isDragging = true;
-      offsetX = e.clientX - textElement.getBoundingClientRect().left;
-      offsetY = e.clientY - textElement.getBoundingClientRect().top;
-      textElement.style.cursor = "grabbing";
-    });
+    isDragging = true;
+    offsetX = e.clientX - textElement.getBoundingClientRect().left;
+    offsetY = e.clientY - textElement.getBoundingClientRect().top;
+    textElement.style.cursor = "grabbing";
+});
 
-    document.addEventListener("mousemove", function (e) {
+ document.addEventListener("mousemove", function (e) {
       if (!isDragging) return;
       let x = e.clientX - offsetX;
       let y = e.clientY - offsetY;
