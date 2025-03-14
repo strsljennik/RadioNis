@@ -91,33 +91,70 @@ document.getElementById('govna').addEventListener('click', function () {
     });
 
 socket.on('logMessage', (message) => {
-    // Kreiraj novi <li> element za prikaz cele poruke
-    let listItem = document.createElement('li');
-    listItem.textContent = message; // Prikazuje celu poruku (IP adresa + info)
+    const match = message.match(/IP adresa: (.+) \(Info: (.*)\)$/);
+    if (!match) return; // Ako poruka ne odgovara formatu, ništa ne radimo
 
-    // Kreiraj input polje za unos dodatnih informacija
+    const ipAddress = match[1];
+    const infoText = match[2];
+
+    // Kreiramo <li> element za prikaz u listi
+    let listItem = document.createElement('li');
+    
+    // Kreiramo i dodajemo span za prikaz IP adrese
+    let ipSpan = document.createElement('span');
+    ipSpan.textContent = `IP: ${ipAddress}`;
+    listItem.appendChild(ipSpan);
+
+    // Kreiramo input polje za unos dodatne informacije
     let infoInput = document.createElement('input');
     infoInput.type = 'text';
     infoInput.placeholder = 'Dodaj informaciju...';
     infoInput.style.marginLeft = '10px';
+    
+    // Ako već postoji sačuvana informacija, popunjavamo input
+    if (infoText && infoText !== "Nema dodatnog info") {
+        infoInput.value = infoText;
+    }
+
+    // Dodajemo input u <li> kao deo list item-a
+    listItem.appendChild(infoInput);
+
+    // Dodajemo <li> u listu u modal prozoru
+    document.getElementById('uuidList').appendChild(listItem);
+
+    // Kad input polje izgubi fokus (blur), čuvamo promene na serveru
+    infoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
+    });
+
+    // Sada dodajemo još jednu funkcionalnost iz druge verzije koda, gde unosimo sve potrebne informacije
+    const uuidList = document.getElementById('uuidList'); // Element iz tvog HTML-a
+
+    // Kreiranje novog <li> elementa koji prikazuje celu poruku
+    let fullListItem = document.createElement('li');
+    fullListItem.textContent = message; // Poruka sadrži sve potrebne informacije
+
+    // Kreiranje input polja za unos dodatnih informacija
+    let fullInfoInput = document.createElement('input');
+    fullInfoInput.type = 'text';
+    fullInfoInput.placeholder = 'Dodaj informaciju...';
+    fullInfoInput.style.marginLeft = '10px';
 
     // Provera da li postoji već sačuvana informacija za ovu poruku
     socket.emit('getUserNote', message, (savedInfo) => {
         if (savedInfo) {
-            infoInput.value = savedInfo; // Ako postoji sačuvana informacija, popuniti input
+            fullInfoInput.value = savedInfo;
         }
     });
 
-    // Kada korisnik unese novu informaciju i izgubi fokus sa polja, sačuvaj u bazi
-    infoInput.addEventListener('blur', function() {
-        socket.emit('saveUserNote', { message, note: infoInput.value });
+    // Kada admin unese novu informaciju i izgubi fokus, sačuvaj je
+    fullInfoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { message, note: fullInfoInput.value });
     });
 
-    // Dodaj input unutar <li> elementa
-    listItem.appendChild(infoInput);
-
-    // Dodaj <li> element u listu (modal)
-    document.getElementById('uuidList').appendChild(listItem);
+    // Dodavanje input polja unutar <li> elementa i prikaz u listi
+    fullListItem.appendChild(fullInfoInput);
+    uuidList.appendChild(fullListItem);
 });
 
 
