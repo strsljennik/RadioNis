@@ -36,14 +36,19 @@ socket.on('chat-cleared', function() {
 // ZENO PLAYER NA DUGME
 document.getElementById('sound').addEventListener('click', function() {
     var audio = document.getElementById('radioStream');
-    if (audio.paused) {
-        audio.play(); // Pokreće stream
-        this.textContent = "Zaustavi Muziku"; // Menja tekst na dugmetu
+
+    if (this.dataset.state === "playing") {
+        audio.pause();
+        this.textContent = "Muzika";
+        this.dataset.state = "paused";
     } else {
-        audio.pause(); // Pauzira stream
-        this.textContent = "Muzika"; // Vraća originalni tekst na dugmetu
+        audio.play().then(() => {
+            this.textContent = "Zaustavi Muziku";
+            this.dataset.state = "playing";
+        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
 });
+
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
