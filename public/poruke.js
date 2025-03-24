@@ -34,31 +34,36 @@ socket.on('chat-cleared', function() {
     chatWindow.innerHTML = ""; // Briše sve unutar chata
 });
 // ZENO PLAYER NA DUGME
-document.getElementById('sound').addEventListener('click', function() {
+document.addEventListener("DOMContentLoaded", function() {
     var audio = document.getElementById('radioStream');
+    var button = document.getElementById('sound');
+    var isPlaying = false;
 
-    if (this.dataset.state === "playing") {
-        audio.pause();
-        this.textContent = "Muzika";
-        this.dataset.state = "paused";
-    } else {
-        playStream(audio, this);
+    button.addEventListener('click', function() {
+        if (isPlaying) {
+            audio.pause();
+            button.textContent = "Muzika";
+            isPlaying = false;
+        } else {
+            playStream();
+        }
+    });
+
+    function playStream() {
+        audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
+        audio.load();  
+        audio.play().then(() => {
+            button.textContent = "Zaustavi Muziku";
+            isPlaying = true;
+        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
+
+    // Automatsko ponovno pokretanje pri gubitku konekcije
+    audio.addEventListener('error', function() {
+        setTimeout(playStream, 3000);
+    });
 });
 
-function playStream(audio, button) {
-    audio.src = "https://stream.zeno.fm/krdfduyswxhtv"; // Osvežavanje URL-a
-    audio.load(); // Ponovno učitavanje
-    audio.play().then(() => {
-        button.textContent = "Zaustavi Muziku";
-        button.dataset.state = "playing";
-    }).catch(error => console.error("Greška pri puštanju zvuka:", error));
-}
-
-// Ponovno pokretanje pri gubitku konekcije
-document.getElementById('radioStream').addEventListener('error', function() {
-    setTimeout(() => playStream(this, document.getElementById('sound')), 3000);
-});
 
 
 //  REGISTRACIJA I LOGIN TABLA
