@@ -42,12 +42,24 @@ document.getElementById('sound').addEventListener('click', function() {
         this.textContent = "Muzika";
         this.dataset.state = "paused";
     } else {
-        audio.play().then(() => {
-            this.textContent = "Zaustavi Muziku";
-            this.dataset.state = "playing";
-        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
+        playStream(audio, this);
     }
 });
+
+function playStream(audio, button) {
+    audio.src = "https://stream.zeno.fm/krdfduyswxhtv"; // Osvežavanje URL-a
+    audio.load(); // Ponovno učitavanje
+    audio.play().then(() => {
+        button.textContent = "Zaustavi Muziku";
+        button.dataset.state = "playing";
+    }).catch(error => console.error("Greška pri puštanju zvuka:", error));
+}
+
+// Ponovno pokretanje pri gubitku konekcije
+document.getElementById('radioStream').addEventListener('error', function() {
+    setTimeout(() => playStream(this, document.getElementById('sound')), 3000);
+});
+
 
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
