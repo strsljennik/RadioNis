@@ -8,8 +8,8 @@ const permanentGuests = [
 ];
 
 const virtualGuests = [
-    { nickname: 'Bala Hatun', messages: ['Poz Svima', 'jasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'], color: 'deepskyblue' },
-    { nickname: 'Halime', messages: ['Zdravo Sarinenge', 'opaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'], color: 'purple' },
+    { nickname: 'Bala Hatun', messages: ['Poz Svima, <img src="emoji gif/stik2.png" alt="emoji"> ', 'jasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'], color: 'deepskyblue' },
+    { nickname: 'Halime', messages: ['Zdravo Sarinenge', 'opaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  <img src="emoji gif/nov17.gif" alt="emoji"> '], color: 'purple' },
      { nickname: 'Security', messages: ['Ima li nemirnih???? Igrajte, Pevajte, Muvajte se , Lepo se druzite - Nemoj da lomim koske'], color: 'blue' },  
     { nickname: 'Holofira', messages: ['Selami sarinenge', 'toooooooooooooooooooooooo', '*__X__* Mangava tu ❤️', 'Za svet si možda jedna osoba, ali za jednu osobu si ti (X) ceo svet'], color: 'red' },
     { nickname: 'Halime', messages: ['Nas olestar lolije ili ka sredinav ti frizura, Merava tuke *__X__* ❤️💋', 'Volim te X.  To je početak i kraj svegaa', 'Kad sam imala 8 godina moja sestra je bila upola mlađa od mene, sada imam 40, koliko ima moja sestra? KO POGODI DOBIJA 3 PESME OD DJ-A'], color: 'purple' },
@@ -18,12 +18,13 @@ const virtualGuests = [
     { nickname: 'Halime', messages: ['Jasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa X samo tuke em te SUZIPASKE', 'X ajde tejsa ava ko doručko , dakerav tu ko 8 kad ka dzal o Ertugrul ki buti'], color: 'purple' }, 
     { nickname: 'Bala Hatun', messages: ['Jasaaaaaaaaaaaaaaaaaaaaaaaaaaaaa X SAMO MANGE-----TUKE ARI TEJSA', 'X ava tejsa ki večera u 9 , o Osmani na sovela kere '], color:'deepskyblue' },   
     { nickname: 'Holofira', messages: ['X ma te ave tejsa slucajno , o Mehmeti bar kas ulo , ic na ikljovel avrijal'], color: 'red' },     
-    { nickname: 'Halime', messages: ['Ovaj X samo nesto cacka , uvek nesto pokvari'], color: 'purple' },  
+    { nickname: 'Halime', messages: ['Ovaj X samo nesto cacka , uvek nesto pokvari  <img src="emoji gif/dance.gif" alt="emoji">  '], color: 'purple' },  
     { nickname: 'Higijenicar', messages: ['Ne pravite lom,da ne zovem security,odrzavajte higijenu kao da ste kod kuce'], color: 'olive' },  
     { nickname: 'Holofira', messages: ['Tacno , svaki dan nesto dira , treba mu zabraniti pc pod hitno , pre nego pokvari ceo radio'], color: 'red' },  
     { nickname: 'Bala Hatun', messages: ['Ne dirajte X-a , nije on kriv što nezna šta radi '], color:'deepskyblue' },     
     { nickname: 'Halime', messages: ['Dok nisi pokvario ton ajde da slusamo malo Zvonka i Ramka', 'Ako može Šaban i Jasar takođe '], color: 'purple' },   
-     { nickname: 'Security', messages: ['Ja Vas 👀 Sve Vreme, Samo da znate '], color: 'blue' },  
+     { nickname: 'Security', messages: ['Ja Vas 👀 Sve Vreme, Samo da znate  '], color: 'blue' },  
+      { nickname: 'Security', messages: [' <img src="emoji gif/nov13.gif" alt="emoji">  '], color: 'blue' },  
     { nickname: 'Holofira', messages: ['Ne zaboravi Džeja i Sinana'], color: 'red' }, 
     { nickname: 'Robot-X', messages: ['Bala, Hola, Halime -- ako se ne smirite brišacu vas sve 3 zauvek , razumele ?'], color: 'green' }, 
     { nickname: 'Bala Hatun', messages: ['Hoćeš , ali malo sutra '], color:'deepskyblue' }, 
