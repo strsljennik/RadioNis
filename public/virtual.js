@@ -126,7 +126,13 @@ const virtualGuests = [
 
 
         // Pokretanje popunjavanja liste i virtuelnih gostiju
-        window.onload = () => {
-            populatePermanentGuestList(); // Popuni listu sa stalnim gostima
-            startVirtualGuests(); // Pokreni slanje poruka
-        };
+       window.onload = () => {
+    populatePermanentGuestList();
+    startVirtualGuests();
+
+    socket.on('virtual-message', ({ guest, message }) => {
+        sendMessageToChat(guest, message);
+        addGuestToList(guest);
+    });
+};
+
