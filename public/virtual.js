@@ -8,9 +8,10 @@ const permanentGuests = [
 ];
 
 const virtualGuests = [
+      { nickname: 'Higijenicar', messages: [' <img src="emoji gif/hig1.avif" alt="emoji"> '], color: 'olive' },  
     { nickname: 'Bala Hatun', messages: ['Poz Svima, <img src="emoji gif/stik2.png" alt="emoji"> ', 'jasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'], color: 'deepskyblue' },
     { nickname: 'Halime', messages: ['Zdravo Sarinenge', 'opaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  <img src="emoji gif/nov17.gif" alt="emoji"> '], color: 'purple' },
-     { nickname: 'Security', messages: ['Ima li nemirnih???? Igrajte, Pevajte, Muvajte se , Lepo se druzite - Nemoj da lomim koske'], color: 'blue' },  
+     { nickname: 'Security', messages: ['Ima li nemirnih???? Igrajte, Pevajte, Muvajte se , Lepo se druzite - Nemoj da lomim koske  <img src="emoji gif/sec1.avifs" alt="emoji"> '], color: 'blue' },  
     { nickname: 'Holofira', messages: ['Selami sarinenge', 'toooooooooooooooooooooooo', '*__X__* Mangava tu ❤️', 'Za svet si možda jedna osoba, ali za jednu osobu si ti (X) ceo svet'], color: 'red' },
     { nickname: 'Halime', messages: ['Nas olestar lolije ili ka sredinav ti frizura, Merava tuke *__X__* ❤️💋', 'Volim te X.  To je početak i kraj svegaa', 'Kad sam imala 8 godina moja sestra je bila upola mlađa od mene, sada imam 40, koliko ima moja sestra? KO POGODI DOBIJA 3 PESME OD DJ-A'], color: 'purple' },
     { nickname: 'Bala Hatun', messages: ['Dzabe tumen cupinen pe taro bala OV TANO SAMO MLO', 'Volim te X ne samo zbog onoga što jesi, već i zbog onoga što sam ja kad sam s tobom', 'Tvoje je, ali ga svi drugi više koriste nego ti. KO POGODI 3 PESME OD DJ-A'], color:'deepskyblue' },
@@ -28,8 +29,10 @@ const virtualGuests = [
     { nickname: 'Holofira', messages: ['Ne zaboravi Džeja i Sinana'], color: 'red' }, 
     { nickname: 'Robot-X', messages: ['Bala, Hola, Halime -- ako se ne smirite brišacu vas sve 3 zauvek , razumele ?'], color: 'green' }, 
     { nickname: 'Bala Hatun', messages: ['Hoćeš , ali malo sutra '], color:'deepskyblue' }, 
+      { nickname: 'Security', messages: ['  <img src="emoji gif/sec1.avifs" alt="emoji"> '], color: 'blue' },  
     { nickname: 'Holofira', messages: ['Kad bi ti mogo bez nas , odavno bi nas izbrisao '], color:'red' },  
     { nickname: 'Halime', messages: ['Možda i možeš ti nas da izbrišeš sa chata, ali nas ne možeš izbrisati iz srca '], color: 'purple' },  
+       { nickname: 'Higijenicar', messages: ['  <img src="emoji gif/hig2.avif" alt="emoji">  '], color: 'olive' }, 
     { nickname: 'Robot-X', messages: ['Nastavite da galamite, igrajte se , pa ćemo videti šta će biti...........'], color: 'green' }, 
     { nickname: 'Holofira', messages: ['O -X, -X! Zašto moraš biti -X? Odbaci svoje ime, oslobodi se svog postojanja, i obećaj mi ljubav, biću tvoja zauvek.'], color: 'red' },
     { nickname: 'Robot-X', messages: ['Zovem se Robot-X, i ti, Holofiro, si ona kojoj srce dajem. Neka sve tvoje zapovesti nas mrze, ali samo tebe želim.'], color: 'green' },
@@ -45,7 +48,7 @@ const virtualGuests = [
     { nickname: 'Holofira', messages: ['Oh, tako sam srećna što sam postala tvoja, I šta god nas čeka, bićemo zajedno.'], color: 'red' },
     { nickname: 'Holofira', messages: ['U svim momentima, ljubavi, mi smo svet. Nema ničeg većeg od toga.'], color: 'red' },
     { nickname: 'Robot-X', messages: ['Nikad neću zaboraviti tvoje reči, -X, jer si sve za mene.'], color: 'green' },
-    { nickname: 'Robot-X', messages: ['I ti si sve za mene, Holofira, samo ti.'], color: 'white' },
+    { nickname: 'Robot-X', messages: ['I ti si sve za mene, Holofira, samo ti.'], color: 'green' },
     { nickname: 'Holofira', messages: ['Ponekad mislim da bih mogla da se rastopim samo da bih bila s tobom, Robot-X.'], color: 'red' },
     { nickname: 'Robot-X', messages: ['Nikad ne moraš da se rastopiš, Holofira, jer te već volim takvu kakva jesi.'], color: 'green' },
     { nickname: 'Holofira', messages: ['Svaka sekunda bez tebe je preduga, Robot-X. Volim te, više nego što bi ikada mogao da razumeš.'], color: 'red' },
