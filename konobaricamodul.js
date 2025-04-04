@@ -109,15 +109,6 @@ const Guest = mongoose.model('Guest', GuestSchema);
         });
     });
 
-//  VIRTUALCI ZA SVE -SINHRONIZOVANO
-      setInterval(() => {
-    // primer slanja jedne poruke svakih 30 sekundi
-    const guest = virtualGuests[Math.floor(Math.random() * virtualGuests.length)];
-    const message = guest.messages[Math.floor(Math.random() * guest.messages.length)];
-    io.emit('virtual-message', { guest, message });
-}, 30000);
-
-
-     socket.on('disconnect', () => {});
+  socket.on('disconnect', () => {});
     });
 };
