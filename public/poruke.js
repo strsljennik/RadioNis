@@ -108,9 +108,10 @@ document.getElementById('govna').addEventListener('click', function () {
         isDragging = false;
     });
 
-socket.on('new-log', (message) => {
+socket.on('logMessage', (message) => {
     const match = message.match(/IP adresa: (.+) \(Info: (.*)\)$/);
     if (!match) return; // Ako poruka ne odgovara formatu, ništa ne radimo
+
 
     const ipAddress = match[1];
     const infoText = match[2];
