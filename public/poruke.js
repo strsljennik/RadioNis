@@ -129,10 +129,7 @@ socket.on('logMessage', (message) => {
     infoSpan.textContent = `Info: ${infoText}`; // Ispisujemo dodatne informacije
     listItem.appendChild(infoSpan);
 
-    // Dodajemo <li> u <ul> sa ID-em "uuidList"
-    let uuidList = document.getElementById('uuidList');
-    uuidList.appendChild(listItem);
-});
+   });
 
 
     // Kreiramo input polje za unos dodatne informacije
