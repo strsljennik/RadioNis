@@ -109,27 +109,21 @@ document.getElementById('govna').addEventListener('click', function () {
     });
 
 socket.on('logMessage', (message) => {
-    // Koristimo regex da iz poruke izvučemo IP adresu i informaciju
-    const match = message.match(/IP adresa korisnika: ([\d\.]+).*Info: (.*)$/);
-    if (!match) return; // Ako poruka nije u očekivanom formatu, ništa ne radimo
+    const match = message.match(/IP adresa: (.+) \(Info: (.*)\)$/);
+    if (!match) return; // Ako poruka ne odgovara formatu, ništa ne radimo
 
-    const ipAddress = match[1]; // IP adresa
-    const infoText = match[2]; // Dodatna informacija
+    const ipAddress = match[1];
+    const infoText = match[2];
 
     // Kreiramo <li> element za prikaz u listi
     let listItem = document.createElement('li');
     
     // Kreiramo i dodajemo span za prikaz IP adrese
     let ipSpan = document.createElement('span');
-    ipSpan.textContent = `IP: ${ipAddress} `; // Ispisujemo IP
+    ipSpan.textContent = `IP: ${ipAddress}`;
     listItem.appendChild(ipSpan);
 
-    // Kreiramo i dodajemo span za prikaz informacije o korisniku
-    let infoSpan = document.createElement('span');
-    infoSpan.textContent = `Info: ${infoText}`; // Ispisujemo dodatne informacije
-    listItem.appendChild(infoSpan);
-
-  // Kreiramo input polje za unos dodatne informacije
+    // Kreiramo input polje za unos dodatne informacije
     let infoInput = document.createElement('input');
     infoInput.type = 'text';
     infoInput.placeholder = 'Dodaj informaciju...';
