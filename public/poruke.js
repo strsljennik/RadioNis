@@ -129,10 +129,7 @@ socket.on('logMessage', (message) => {
     infoSpan.textContent = `Info: ${infoText}`; // Ispisujemo dodatne informacije
     listItem.appendChild(infoSpan);
 
-   });
-
-
-    // Kreiramo input polje za unos dodatne informacije
+  // Kreiramo input polje za unos dodatne informacije
     let infoInput = document.createElement('input');
     infoInput.type = 'text';
     infoInput.placeholder = 'Dodaj informaciju...';
