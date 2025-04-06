@@ -84,19 +84,15 @@ io.emit('updateGuestList', Object.values(guests));
 console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 io.emit('logMessage', `${guests[socket.id]} se povezao. IP adresa: ${ipAddress}`);
 
-// Obrada prijave korisnika
 socket.on('userLoggedIn', (username) => {
     io.emit('logMessage', `${guests[socket.id]} je ${username}. IP adresa: ${ipAddress}`);
     
- if (authorizedUsers.has(username)) {
-        io.emit('logMessage', `${username} je autentifikovan kao admin.`);
-    } else {
-        io.emit('logMessage', `${username} se prijavio kao gost.`);
+    if (authorizedUsers.has(username)) {
+        // Ovdje možeš dodati specifične akcije za autorizovane korisnike, ako su potrebne
     }
-
+     guests[socket.id] = username;
     io.emit('updateGuestList', Object.values(guests));
 });
-
 
  // Obrada slanja chat poruka
     socket.on('chatMessage', (msgData) => {
