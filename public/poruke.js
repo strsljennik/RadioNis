@@ -110,7 +110,7 @@ document.getElementById('govna').addEventListener('click', function () {
 
 const uuidList = document.getElementById('uuidList');
 
-  socket.on('new-log', (message) => {
+socket.on('new-log', (message) => {
     const ipMatch = message.match(/(.+?) se povezao\. IP adresa korisnika: ([\d\.]+)/);
     const renameMatch = message.match(/(.+?) je sada (.+?)\./);
 
@@ -118,15 +118,36 @@ const uuidList = document.getElementById('uuidList');
 
     if (ipMatch) {
         let nickname = ipMatch[1];
-        let ip = ipMatch[2];
-        listItem.textContent = `Korisnik: ${nickname} | IP: ${ip}`;
-        listItem.setAttribute('data-ip', ip);
+        let ipAddress = ipMatch[2];
+
+        listItem.textContent = `Korisnik: ${nickname} | IP: ${ipAddress}`;
+        listItem.setAttribute('data-ip', ipAddress);
+
+        // Input za dodatni info
+        let infoInput = document.createElement('input');
+        infoInput.type = 'text';
+        infoInput.placeholder = 'Dodaj informaciju...';
+        infoInput.style.marginLeft = '10px';
+
+        // Provera sačuvanog teksta (ako stiže od servera u nekoj drugoj poruci)
+        socket.emit('getUserNote', ipAddress, (note) => {
+            if (note && note !== "Nema dodatnog info") {
+                infoInput.value = note;
+            }
+        });
+
+        infoInput.addEventListener('blur', function() {
+            socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
+        });
+
+        listItem.appendChild(infoInput);
+
     } else if (renameMatch) {
         let from = renameMatch[1];
         let to = renameMatch[2];
         listItem.textContent = `Preimenovan: ${from} → ${to}`;
     } else {
-        return; // Ignoriši ostale poruke (admin/gost status)
+        return;
     }
 
     uuidList.appendChild(listItem);
