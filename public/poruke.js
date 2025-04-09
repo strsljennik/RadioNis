@@ -110,33 +110,27 @@ document.getElementById('govna').addEventListener('click', function () {
 
 const uuidList = document.getElementById('uuidList');
 
-    socket.on('new-log', (message) => {
-        const [_, ipAddress, infoText] = message.match(/IP adresa: (.+) \(Info: (.*)\)/) || [];
-        if (!ipAddress) return; // Ako ne može da izvuče IP adresu, ignorisi
+   socket.on('new-log', (message) => {
+    const ipMatch = message.match(/IP adresa korisnika: ([\d\.]+)/);
+    if (!ipMatch) return;
 
-        // Kreiranje <li> elementa za IP adresu
-        let listItem = document.createElement('li');
-        listItem.textContent = `IP: ${ipAddress}`;
+    const ipAddress = ipMatch[1];
 
-        // Kreiranje input polja za unos dodatnog info
-        let infoInput = document.createElement('input');
-        infoInput.type = 'text';
-        infoInput.placeholder = 'Dodaj informaciju...';
-        infoInput.style.marginLeft = '10px';
+    let listItem = document.createElement('li');
+    listItem.textContent = `IP: ${ipAddress}`;
 
-        // Ako imamo već sačuvan tekst u bazi, ubacujemo ga u polje
-        if (infoText && infoText !== "Nema dodatnog info") {
-            infoInput.value = infoText;
-        }
+    let infoInput = document.createElement('input');
+    infoInput.type = 'text';
+    infoInput.placeholder = 'Dodaj informaciju...';
+    infoInput.style.marginLeft = '10px';
 
-        // Kada admin unese tekst i izgubi fokus sa polja, čuvamo u bazi
-        infoInput.addEventListener('blur', function() {
-            socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
-        });
-
-        listItem.appendChild(infoInput);
-        uuidList.appendChild(listItem);
+    infoInput.addEventListener('blur', function() {
+        socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
     });
+
+    listItem.appendChild(infoInput);
+    uuidList.appendChild(listItem);
+});
 
 
 // Selektovanje liste
