@@ -110,28 +110,27 @@ document.getElementById('govna').addEventListener('click', function () {
 
 const uuidList = document.getElementById('uuidList');
 
-   socket.on('new-log', (message) => {
-    const ipMatch = message.match(/IP adresa korisnika: ([\d\.]+)/);
-    if (!ipMatch) return;
-
-    const ipAddress = ipMatch[1];
+  socket.on('new-log', (message) => {
+    const ipMatch = message.match(/(.+?) se povezao\. IP adresa korisnika: ([\d\.]+)/);
+    const renameMatch = message.match(/(.+?) je sada (.+?)\./);
 
     let listItem = document.createElement('li');
-    listItem.textContent = `IP: ${ipAddress}`;
 
-    let infoInput = document.createElement('input');
-    infoInput.type = 'text';
-    infoInput.placeholder = 'Dodaj informaciju...';
-    infoInput.style.marginLeft = '10px';
+    if (ipMatch) {
+        let nickname = ipMatch[1];
+        let ip = ipMatch[2];
+        listItem.textContent = `Korisnik: ${nickname} | IP: ${ip}`;
+        listItem.setAttribute('data-ip', ip);
+    } else if (renameMatch) {
+        let from = renameMatch[1];
+        let to = renameMatch[2];
+        listItem.textContent = `Preimenovan: ${from} → ${to}`;
+    } else {
+        return; // Ignoriši ostale poruke (admin/gost status)
+    }
 
-    infoInput.addEventListener('blur', function() {
-        socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
-    });
-
-    listItem.appendChild(infoInput);
     uuidList.appendChild(listItem);
 });
-
 
 // Selektovanje liste
 let selectedItem = null;
