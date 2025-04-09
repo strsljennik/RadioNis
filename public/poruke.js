@@ -123,34 +123,41 @@ socket.on('new-log', (message) => {
         listItem.textContent = `Korisnik: ${nickname} | IP: ${ipAddress}`;
         listItem.setAttribute('data-ip', ipAddress);
 
-        // Input za dodatni info
         let infoInput = document.createElement('input');
         infoInput.type = 'text';
         infoInput.placeholder = 'Dodaj informaciju...';
         infoInput.style.marginLeft = '10px';
-
-        // Provera sačuvanog teksta (ako stiže od servera u nekoj drugoj poruci)
-        socket.emit('getUserNote', ipAddress, (note) => {
-            if (note && note !== "Nema dodatnog info") {
-                infoInput.value = note;
-            }
-        });
 
         infoInput.addEventListener('blur', function() {
             socket.emit('saveUserNote', { ipAddress, note: infoInput.value });
         });
 
         listItem.appendChild(infoInput);
+        uuidList.appendChild(listItem);
 
     } else if (renameMatch) {
         let from = renameMatch[1];
         let to = renameMatch[2];
         listItem.textContent = `Preimenovan: ${from} → ${to}`;
-    } else {
-        return;
+        uuidList.appendChild(listItem);
     }
+});
 
-    uuidList.appendChild(listItem);
+// SAMO OVAJ DEO ZA DODAVANJE INFO U POSTOJEĆE POLJE
+socket.on('logMessage', (message) => {
+    const match = message.match(/IP adresa: ([\d\.]+) \(Info: (.*)\)/);
+    if (!match) return;
+
+    const ipAddress = match[1];
+    const infoText = match[2];
+
+    const existingItem = [...uuidList.children].find(li => li.getAttribute('data-ip') === ipAddress);
+    if (!existingItem) return;
+
+    const input = existingItem.querySelector('input');
+    if (input && infoText && infoText !== "Nema dodatnog info") {
+        input.value = infoText;
+    }
 });
 
 // Selektovanje liste
