@@ -108,6 +108,8 @@ const emojiFolder = 'emoji gif/';
 const allItems = [
     ...['☕', '😀', '😂', '😍', '😎', '😢', '😡',  '👍', '👎',  '❤️', '💔', '🖤', '💛', '💚', '🌷','👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
     ...[
+          'xat1.webp', 'xat2.webp', 'xat3.webp', 'xat4.webp', 'xat5.webp', 
+         'xat6.webp', 'xat7.webp', 'xat8.webp', 'xat9.webp', 
         'slika1.avifs', 'slika2.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 
   'stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 
   'stik6.png', 'stik7.png', 'stik8.png', 'ok.gif', 'stik9.png', 
