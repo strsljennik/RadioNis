@@ -82,23 +82,23 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
     socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
  console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
- socket.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
+ io.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
  // Obrada prijave korisnika
 socket.on('userLoggedIn', (username) => {
     const oldNickname = guests[socket.id]; // Sačuvamo trenutni nadimak
 
     console.log(`${oldNickname} je sada ${username}.`);
-    socket.emit('new-log', `${oldNickname} je sada ${username}.`);
+    io.emit('new-log', `${oldNickname} je sada ${username}.`);
 
     guests[socket.id] = username;
 
     if (authorizedUsers.has(username)) {
         console.log(`${username} je autentifikovan kao admin.`);
-        socket.emit('new-log', `${username} je autentifikovan kao admin.`);
+        io.emit('new-log', `${username} je autentifikovan kao admin.`);
     } else {
         console.log(`${username} se prijavio kao gost.`);
-        socket.emit('new-log', `${username} se prijavio kao gost.`);
+        io.emit('new-log', `${username} se prijavio kao gost.`);
     }
 
     io.emit('updateGuestList', Object.values(guests));
