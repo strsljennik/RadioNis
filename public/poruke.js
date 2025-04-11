@@ -58,13 +58,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
 
-    // Automatsko ponovno pokretanje pri gubitku konekcije
-    audio.addEventListener('error', function() {
-        setTimeout(playStream, 3000);
-    });
-});
+   audio.addEventListener('stalled', restartStream);
+audio.addEventListener('error', restartStream);
+audio.addEventListener('ended', restartStream);
+    audio.addEventListener('waiting', restartStream);
+
+    setInterval(() => {
+    if (isPlaying && audio.readyState < 3) {
+        restartStream();
+    }
+}, 5000);
 
 
+function restartStream() {
+    isPlaying = false;
+    playStream();
+}
 
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
