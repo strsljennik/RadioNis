@@ -15,9 +15,23 @@ body {
     position: absolute;
     width: 25px;
     height: 25px;
-    cursor: se-resize; /* Kursor za resize */
-    bottom: 10px;  /* Postavljanje na dno ekrana */
+    cursor: se-resize;
+    bottom: 10px;
 }
+
+#openModal {
+    left: 10px; /* Levo */
+}
+
+#smilesBtn {
+    left: 50%; /* Sredina */
+    transform: translateX(-50%);
+}
+
+#GBtn {
+    right: 10px; /* Desno */
+}
+
 
 #openModal {
     left: 50%;  /* Postavljamo na sredinu */
