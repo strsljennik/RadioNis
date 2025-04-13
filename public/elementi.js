@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const chatButton = document.getElementById("chat");
     const chatContainer = document.getElementById("chatContainer");
+    const chatInput = document.getElementById("chatInput");
     let isDraggable = false;
     let isResizable = false;
 
@@ -8,24 +9,27 @@ document.addEventListener("DOMContentLoaded", () => {
         isDraggable = !isDraggable;
         isResizable = !isResizable;
         chatContainer.style.cursor = isDraggable ? "grab" : isResizable ? "se-resize" : "default";
+        chatInput.style.cursor = isDraggable ? "grab" : isResizable ? "se-resize" : "default";
 
         if (isDraggable || isResizable) {
             chatContainer.addEventListener("mousedown", startAction);
+            chatInput.addEventListener("mousedown", startAction);
         } else {
             chatContainer.removeEventListener("mousedown", startAction);
+            chatInput.removeEventListener("mousedown", startAction);
         }
     });
 
     function startAction(event) {
-        if (isResizable && isInResizeZone(event)) {
-            startResize(event);
+        if (isResizable && isInResizeZone(event, chatInput)) {
+            startResize(event, chatInput);
         } else if (isDraggable) {
             startDrag(event);
         }
     }
 
-    function isInResizeZone(event) {
-        const rect = chatContainer.getBoundingClientRect();
+    function isInResizeZone(event, element) {
+        const rect = element.getBoundingClientRect();
         return event.clientX > rect.right - 10 && event.clientY > rect.bottom - 10;
     }
 
@@ -38,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const y = event.clientY - offsetY;
             chatContainer.style.left = `${x}px`;
             chatContainer.style.top = `${y}px`;
-            socket.emit("moveChatContainer", { x, y });
         }
 
         function stopDrag() {
@@ -50,39 +53,25 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("mouseup", stopDrag);
     }
 
- function startResize(event) {
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const startWidth = chatContainer.offsetWidth;
-    const startHeight = chatContainer.offsetHeight;
+    function startResize(event, element) {
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const startWidth = element.offsetWidth;
+        const startHeight = element.offsetHeight;
 
-    function resize(event) {
-        const width = startWidth + (event.clientX - startX);
-        const height = startHeight + (event.clientY - startY);
-        
-        chatContainer.style.width = `${width}px`;
-        chatContainer.style.height = `${height}px`;
-
-        socket.emit("resizeChatContainer", { width, height });
-    }
-
-    function stopResize() {
-        document.removeEventListener("mousemove", resize);
-        document.removeEventListener("mouseup", stopResize);
-    }
-
-    document.addEventListener("mousemove", resize);
-    document.addEventListener("mouseup", stopResize);
-}
-
- socket.on("updateChatContainer", (data) => {
-        if (data.x !== undefined && data.y !== undefined) {
-            chatContainer.style.left = `${data.x}px`;
-            chatContainer.style.top = `${data.y}px`;
+        function resize(event) {
+            const width = startWidth + (event.clientX - startX);
+            const height = startHeight + (event.clientY - startY);
+            element.style.width = `${width}px`;
+            element.style.height = `${height}px`;
         }
-        if (data.width !== undefined && data.height !== undefined) {
-            chatContainer.style.width = `${data.width}px`;
-            chatContainer.style.height = `${data.height}px`;
+
+        function stopResize() {
+            document.removeEventListener("mousemove", resize);
+            document.removeEventListener("mouseup", stopResize);
         }
-    });
+
+        document.addEventListener("mousemove", resize);
+        document.addEventListener("mouseup", stopResize);
+    }
 });
