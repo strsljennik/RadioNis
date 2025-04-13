@@ -33,22 +33,6 @@ body {
 }
 
 
-#openModal {
-    left: 50%;  /* Postavljamo na sredinu */
-    margin-left: -45px; /* Pomak za 3 dugmadi */
-}
-
-#smilesBtn {
-    left: 50%;
-    margin-left: -15px; /* Pomak za 1 dugme */
-}
-
-#GBtn {
-    left: 50%;
-    margin-left: 15px; /* Pomak za 1 dugme */
-}
-
-
 #authContainer {
     background-color: black;
     border-radius: 10px;
