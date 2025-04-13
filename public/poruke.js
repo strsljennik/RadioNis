@@ -1,17 +1,19 @@
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
-// Event listener za dugme koje otvara modal
 document.getElementById('openModal').addEventListener('click', function () {
     if (authorizedUsers.has(currentUser)) {
-        // Ako je korisnik u listi ovlašćenih, otvara modal
-        document.getElementById('functionModal').style.display = "block";
+        const modal = document.getElementById('functionModal');
+        const button = document.getElementById('openModal');
+        const btnRect = button.getBoundingClientRect();
+
+        modal.style.display = "block";
+        modal.style.left = `${btnRect.left}px`;
+        modal.style.top = `${btnRect.top - modal.offsetHeight - 10}px`;
     } else {
-        // Ako korisnik nije ovlašćen
         alert('Nemate dozvolu da otvorite ovaj panel.');
     }
 });
 
-// Zatvaranje modala
 document.getElementById('closeModal').addEventListener('click', function () {
     document.getElementById('functionModal').style.display = "none";
 });
