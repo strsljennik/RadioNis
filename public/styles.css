@@ -56,8 +56,7 @@ body {
     width: 300px;
     height: 400px;
     overflow-y: auto;
-    resize: both;
-    position: absolute;
+   position: absolute;
     top: 95px;
     left: 5px;
     border: 1px solid #ccc;
@@ -83,8 +82,7 @@ body {
     width: 200px;
     height: 300px;
     overflow-y: auto;
-    resize: both;
-    position: absolute;
+     position: absolute;
     top: 60px;
     right: 0;
     border: 1px solid #ccc;
