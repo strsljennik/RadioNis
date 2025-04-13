@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     const chatButton = document.getElementById("chat");
-    const chatContainer = document.getElementById("chatContainer");
     const chatInput = document.getElementById("chatInput");
     const messageAreaContainer = document.getElementById("messageAreaContainer");
     const guestListContainer = document.getElementById("guestListContainer");
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Apply to all elements (buttons, chat containers)
         const elements = [
-            chatContainer, chatInput, messageAreaContainer, guestListContainer, openModalButton, smilesButton, gButton
+         chatInput, messageAreaContainer, guestListContainer, openModalButton, smilesButton, gButton
         ];
 
         elements.forEach(element => {
