@@ -9,6 +9,14 @@ body {
     margin: 0;
 }
 
+#openModal, #smilesBtn, #GBtn {
+    resize: both;
+    overflow: hidden;
+    position: absolute;
+    cursor: se-resize; /* Kursor za resize */
+}
+
+
 #authContainer {
     background-color: black;
     border-radius: 10px;
