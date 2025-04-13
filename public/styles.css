@@ -23,6 +23,7 @@ body {
     z-index: 9999;
 }
 
+/* Chat Container - Resize i Drag */
 #chatContainer {
     width: 900px;
     height: 550px;
@@ -34,6 +35,8 @@ body {
     position: absolute;
     overflow: hidden;
     z-index: 1;
+    resize: both; /* Omogućava promenu veličine */
+    cursor: grab; /* Kursor za drag */
 }
 
 .toolbarBtn {
@@ -56,13 +59,15 @@ body {
     width: 300px;
     height: 400px;
     overflow-y: auto;
-   position: absolute;
+    position: absolute;
     top: 95px;
     left: 5px;
     border: 1px solid #ccc;
     padding: 10px;
     background-color: black;
     color: white;
+    resize: both; /* Omogućava promenu veličine */
+    cursor: se-resize; /* Kursor za resize */
 }
 
 #messageArea {
@@ -82,12 +87,14 @@ body {
     width: 200px;
     height: 300px;
     overflow-y: auto;
-     position: absolute;
+    position: absolute;
     top: 60px;
     right: 0;
     border: 1px solid #ccc;
     background-color: black;
     color: white;
+    resize: both; /* Omogućava promenu veličine */
+    cursor: se-resize; /* Kursor za resize */
 }
 
 #guestList {
@@ -123,11 +130,18 @@ body {
     padding: 5px;
     border-radius: 5px;
     border: 2px solid white;
-    resize: none;
     font-size: 17px;
     background-color: black;
     color: white;
     overflow: hidden;
+    cursor: text; /* Kursor za unos teksta */
+    resize: both; /* Omogućava resize sa svih strana */
+    box-sizing: border-box; /* Podesite box model tako da padding ne utiče na širinu/visinu */
+}
+
+/* Dodajte hover efekt za chat input */
+#chatInput:hover {
+    cursor: se-resize; /* Kursor kad korisnik povuče za resize */
 }
 
     
