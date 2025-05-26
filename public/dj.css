@@ -227,8 +227,8 @@ h1 {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
-  height: 300px;
+  width: 800px;
+  height: 800px;
   border: none;
   z-index: 9999; /* da bude iznad ostalih elemenata */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
